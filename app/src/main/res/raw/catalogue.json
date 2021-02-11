@@ -1,0 +1,113 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "title": "Carrier Bag",
+      "brand" : "Carrier",
+      "short_description": "Navy blue or Brown soft leather",
+      "description": "Our Mountain Briefcase is the ultimate shape changing, go to work, bum around town, travel the world, do it all every day carry",
+      "price": 249.99,
+      "image": "https://drive.google.com/uc?export=download&id=1OJLo9_zGIBjTVbSsv1WJjm7KIRz6yEvf",
+      "colors": [
+        {
+          "code": "#1f2939",
+          "name": "blue"
+        },
+        {
+          "code": "#a26247",
+          "name": "brown"
+        }
+      ],
+      "size": {
+        "H": "36cm / 14in",
+        "W": "38cm / 15in",
+        "D": "20cm / 8in"
+      },
+      "quantity": 20
+    },
+    {
+      "id": 2,
+      "title": "Urban School",
+      "brand" : "Urban stuff",
+      "short_description": "Biker Basics",
+      "description": "This is a biker bag you can carry everywhere",
+      "price": 75,
+      "image": "https://drive.google.com/uc?export=download&id=1-jAX2u0BktShU-2Rh2KCKUaornpmnup_",
+      "colors": [
+        {
+          "code": "#808080",
+          "name": "gray"
+        },
+        {
+          "code": "#efef18",
+          "name": "yellow"
+        },
+        {
+          "code": "#efa714",
+          "name": "orange"
+        }
+      ],
+      "size": {
+        "H": "36cm / 14in",
+        "W": "38cm / 15in",
+        "D": "20cm / 8in"
+      },
+      "quantity": 51
+    },
+    {
+      "id": 4,
+      "title": "Pickeball",
+      "brand" : "H & M",
+      "short_description": "Light hi-tech canvas",
+      "description": "Skillfully functional yet sophisticated, the backpack of the season is a refined display of workmanship. It is handcrafted from a modern mix of matte calfskin and hard-wearing nylon, and finished with patch pockets woven in the iconic intrecciato motif.",
+      "price": 75,
+      "image": "https://drive.google.com/uc?export=download&id=1eTM8jGKpOilrodXxTRSCYQ3h-q8wks5j",
+      "colors": [
+        {
+          "code": "#585550",
+          "name": "grey"
+        },
+        {
+          "code": "#000000",
+          "name": "black"
+        }
+      ],
+      "size": {
+        "H": "36cm / 5in",
+        "W": "38cm / 9in",
+        "D": "20cm / 11in"
+      },
+      "quantity": 2
+    },
+    {
+      "id": 3,
+      "title": "Travol",
+      "brand" : "StarBrand",
+      "short_description": "Soft leather bag",
+      "description": "This is a casual leather bag",
+      "price": 174.99,
+      "image": "https://drive.google.com/uc?export=download&id=153Bxt2QjTyICkP_wSO8JyWXgaRocQlSs",
+      "size": {
+        "H": "36cm / 14in",
+        "W": "38cm / 15in",
+        "D": "20cm / 8in"
+      },
+      "quantity": 0
+    },
+    {
+      "id": 5,
+      "title": "Herschel Classic",
+      "brand" : "Herschel",
+      "short_description": "Herschel Classic backpack",
+      "description": "The Herschel Classic backpack stays true to its timeless design, offering a clean and simple silhouette that is perfectly tailored to fit your style",
+      "price": 129.49,
+      "image": "https://drive.google.com/uc?export=download&id=1sjVpx-dbwEU3Kw3BVbfomcShq3WLoJbK",
+      "size": {
+        "H": "33cm / 16in",
+        "W": "23cm / 8in",
+        "D": "67cm / 11in"
+      },
+      "quantity": 22
+    }
+  ]
+}

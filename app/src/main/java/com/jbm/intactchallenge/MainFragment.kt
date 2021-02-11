@@ -1,33 +1,37 @@
 package com.jbm.intactchallenge
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.RetryPolicy
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.jbm.intactchallenge.model.CatalogRepo
 import com.jbm.intactchallenge.model.Color
 import com.jbm.intactchallenge.model.Product
 import com.jbm.intactchallenge.model.Size
-import kotlinx.coroutines.launch
+import com.squareup.picasso.Picasso
 import org.json.JSONArray
 import org.json.JSONObject
 
 class MainFragment : Fragment() {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
-    var catalog: MutableList<Product> = mutableListOf()
-
 
     val url_json = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
-    lateinit var tv: TextView
+    var catalog = mutableListOf<Product>()
+
+    lateinit var catalogParentView: LinearLayout
+    lateinit var wishlistParentView: LinearLayout
 
     companion object {
         fun newInstance() = MainFragment()
@@ -37,27 +41,58 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.main_fragment, container,false)
 
-        tv = view.findViewById(R.id.message)
+        catalogParentView = view.findViewById(R.id.catalog_list)
+        wishlistParentView = view.findViewById(R.id.wishlist_list)
 
+        //start Coroutine that will load and parse Json from URL, then update UI
         loadJsonfromUrl(url_json)
 
         return view
     }
 
-    fun loadJsonfromUrl (url: String) {
-        lifecycleScope.launch {
-            val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
-                    Response.Listener { response ->
-                        Log.d(TAG, response.toString())
-                        tv.text = response.toString()
+    fun updateUI() {
+        for (i in 0..catalog.size-1) {
+            //Inflate the catalog Item layout in the catalog parent View
+            val catalogItem: View = layoutInflater.inflate(R.layout.catalog_item, catalogParentView, false)
 
-                        parseCatalogResponse(response)
-                    }, Response.ErrorListener { error ->
-                        Log.d(TAG, "Error receiving Json response from Volley :" + error.toString())
+            //Update item title
+            catalogItem.findViewById<TextView>(R.id.catalog_item_title).text = catalog[i].title
+
+            // update item image from URL
+            Picasso.get()
+                .load(catalog[i].imageUrl)
+                .resize(200, 200)
+                .centerCrop()
+                .into(catalogItem.findViewById<ImageView>(R.id.catalog_item_image))
+
+
+            catalogParentView.addView(catalogItem)
+        }
+    }
+
+    fun loadJsonfromUrl (url: String) {
+        val jsonObjectRequest = JsonObjectRequest(Request.Method.GET, url, null,
+            { response ->
+                Log.d(TAG, response.toString())
+                parseCatalogResponse(response)
+                updateUI()
+                              },
+            { error ->
+                Log.d(TAG, "Error receiving Json response from Volley :$error")
+                // if error then retrive JSON from local file
+                parseCatalogResponse(getCatalogFromRaw())
+                updateUI()
             })
 
-            Volley.newRequestQueue(requireContext()).add(jsonObjectRequest)
-        }
+        Volley.newRequestQueue(requireContext()).add(jsonObjectRequest)
+    }
+
+    // this fun get the data from the JSON file in res/raw, parse it and build the list of game
+    fun getCatalogFromRaw(): JSONObject {
+
+        val rawData = resources.openRawResource(R.raw.catalogue).bufferedReader().use { it.readText() }
+        return JSONObject(rawData)
+
     }
 
     fun parseCatalogResponse(response: JSONObject) {
@@ -104,6 +139,8 @@ class MainFragment : Fragment() {
 
             catalog.add(newProduct)
         }
+
+        Log.d(TAG, "JSON parsed")
     }
 
 

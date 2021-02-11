@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Intact Challenge</string>
+    <string name="your_wish_list">Your Wish List</string>
+    <string name="product_catalogue">Product Catalogue</string>
 </resources>
