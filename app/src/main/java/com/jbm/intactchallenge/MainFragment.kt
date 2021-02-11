@@ -1,6 +1,5 @@
 package com.jbm.intactchallenge
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,12 +9,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
-import com.android.volley.Response
-import com.android.volley.RetryPolicy
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.model.Color
 import com.jbm.intactchallenge.model.Product
 import com.jbm.intactchallenge.model.Size
@@ -30,8 +27,8 @@ class MainFragment : Fragment() {
     val url_json = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
     var catalog = mutableListOf<Product>()
 
-    lateinit var catalogParentView: LinearLayout
-    lateinit var wishlistParentView: LinearLayout
+    lateinit var catalogLayout: LinearLayout
+    lateinit var wishlistLayout: LinearLayout
 
     companion object {
         fun newInstance() = MainFragment()
@@ -41,32 +38,44 @@ class MainFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         val view = inflater.inflate(R.layout.main_fragment, container,false)
 
-        catalogParentView = view.findViewById(R.id.catalog_list)
-        wishlistParentView = view.findViewById(R.id.wishlist_list)
+        catalogLayout = view.findViewById(R.id.catalog_layout)
+        wishlistLayout = view.findViewById(R.id.wishlist_layout)
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
 
         //start Coroutine that will load and parse Json from URL, then update UI
         loadJsonfromUrl(url_json)
-
-        return view
     }
 
     fun updateUI() {
         for (i in 0..catalog.size-1) {
             //Inflate the catalog Item layout in the catalog parent View
-            val catalogItem: View = layoutInflater.inflate(R.layout.catalog_item, catalogParentView, false)
+            val catalogItem: View = layoutInflater.inflate(R.layout.catalog_item, catalogLayout, false)
 
             //Update item title
             catalogItem.findViewById<TextView>(R.id.catalog_item_title).text = catalog[i].title
 
             // update item image from URL
+            /*
             Picasso.get()
                 .load(catalog[i].imageUrl)
                 .resize(200, 200)
                 .centerCrop()
                 .into(catalogItem.findViewById<ImageView>(R.id.catalog_item_image))
 
+             */
 
-            catalogParentView.addView(catalogItem)
+            Glide.with(this)
+                .load(catalog[i].imageUrl)
+                .centerCrop()
+                .into(catalogItem.findViewById<ImageView>(R.id.catalog_item_image));
+
+
+            catalogLayout.addView(catalogItem)
         }
     }
 

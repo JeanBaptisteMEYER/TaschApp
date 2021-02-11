@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:layout_margin="4dp">
 
     <ImageView
         android:id="@+id/catalog_item_image"
@@ -16,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:textSize="10dp"
-        android:textColor="@color/black"/>
-
+        android:textColor="@color/black"
+        android:textStyle="bold"/>
 
 </LinearLayout>
