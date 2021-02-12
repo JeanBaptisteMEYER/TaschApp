@@ -7,4 +7,9 @@
     <string name="free_shipping">Free Shipping World Wide</string>
     <string name="proceed_to_checkout">Proceed to check out</string>
     <string name="out_of_stock">Out of stock</string>
+    <string name="color">Color</string>
+    <string name="size">Size</string>
+    <string name="rate_product">Rate the product</string>
+    <string name="add_to_wishlist">Add to wish list</string>
+
 </resources>

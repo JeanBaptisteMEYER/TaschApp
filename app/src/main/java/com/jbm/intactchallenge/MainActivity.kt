@@ -2,8 +2,13 @@ package com.jbm.intactchallenge
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.os.bundleOf
+import com.jbm.intactchallenge.model.Constantes
+import com.jbm.intactchallenge.model.MyRepository
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var myRepository: MyRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -13,5 +18,14 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+    }
+
+    fun showDetailFragment(productId: Int) {
+        val bundle = bundleOf(Constantes().ID_PARAM to productId)
+
+        supportFragmentManager.beginTransaction()
+            .addToBackStack(null)
+            .replace(R.id.container, DetailFragment.newInstance(productId))
+            .commit()
     }
 }

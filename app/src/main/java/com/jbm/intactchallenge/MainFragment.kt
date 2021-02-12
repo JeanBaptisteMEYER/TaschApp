@@ -1,9 +1,8 @@
 package com.jbm.intactchallenge
 
+import android.content.Context
 import android.graphics.drawable.ColorDrawable
-import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,23 +11,10 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayoutStates
 import androidx.lifecycle.lifecycleScope
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
-import com.jbm.intactchallenge.model.Color
 import com.jbm.intactchallenge.model.MyRepository
-import com.jbm.intactchallenge.model.Product
-import com.jbm.intactchallenge.model.Size
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
-import org.json.JSONArray
-import org.json.JSONObject
-import org.w3c.dom.Text
-import kotlin.math.roundToInt
 
 
 class MainFragment : Fragment(), MyRepository.View {
@@ -38,7 +24,6 @@ class MainFragment : Fragment(), MyRepository.View {
     lateinit var mainView: View
     lateinit var catalogLayout: LinearLayout
     lateinit var wishlistLayout: LinearLayout
-    lateinit var myRepository: MyRepository
 
     companion object {
         fun newInstance() = MainFragment()
@@ -52,15 +37,16 @@ class MainFragment : Fragment(), MyRepository.View {
         wishlistLayout = mainView.findViewById(R.id.wishlist_layout)
         mainView.findViewById<Button>(R.id.checkou_button).setOnClickListener{
             // clear the wishedlist and update ui
-            for (product in myRepository.catalog)
+            for (product in (activity as MainActivity).myRepository.catalog)
                 product.wishListed = 0
 
             updateWishListUI()
-
         }
 
-        myRepository = MyRepository(requireContext(), this)
-        lifecycleScope.launch { myRepository.loadJsonfromUrl() }
+        (activity as MainActivity).myRepository = MyRepository(requireContext(), this)
+        lifecycleScope.launch { (activity as MainActivity).myRepository.loadJsonfromUrl() }
+
+        requireActivity().title = getString(R.string.app_name)
 
         return mainView
     }
@@ -80,20 +66,24 @@ class MainFragment : Fragment(), MyRepository.View {
 
         catalogLayout.removeAllViews()
 
-        for (i in 0..myRepository.catalog.size-1) {
+        for (product in (activity as MainActivity).myRepository.catalog) {
             //Inflate the catalog Item layout in the catalog parent View
             val productView: View = layoutInflater.inflate(R.layout.catalog_item, catalogLayout, false)
 
             //Update item title
-            productView.findViewById<TextView>(R.id.catalog_item_title).text = myRepository.catalog[i].title
+            productView.findViewById<TextView>(R.id.catalog_item_title).text = product.title
 
             //load image into ImageView
             Glide
                 .with(this)
-                .load(myRepository.catalog[i].imageUrl)
+                .load(product.imageUrl)
                 .centerCrop()
                 .override(200, 200)
                 .into(productView.findViewById<ImageView>(R.id.catalog_item_image));
+
+            productView.setOnClickListener {
+                showDetailFragment(product.id)
+            }
 
             //add the new product view to our scrolling view
             catalogLayout.addView(productView)
@@ -105,7 +95,7 @@ class MainFragment : Fragment(), MyRepository.View {
         var totalPrice = 0
         wishlistLayout.removeAllViews()
 
-        for (product in myRepository.catalog) {
+        for (product in (activity as MainActivity).myRepository.catalog) {
             if (product.wishListed == 1) {
                 val wishedProductView: View =
                     layoutInflater.inflate(R.layout.wishlist_item, wishlistLayout, false)
@@ -149,6 +139,9 @@ class MainFragment : Fragment(), MyRepository.View {
                 else
                     outOfStockView.visibility = View.GONE
 
+                wishedProductView.setOnClickListener {
+                    showDetailFragment(product.id)
+                }
 
                 //add the new product view to our scrolling view
                 wishlistLayout.addView(wishedProductView)
@@ -158,7 +151,11 @@ class MainFragment : Fragment(), MyRepository.View {
         //update total price in the UI
         mainView.findViewById<TextView>(R.id.total_textview).text = getString(R.string.total) +
                 " $" + totalPrice
-        mainView.findViewById<TextView>(R.id.sub_total_textview).text = getString(R.string.total) +
+        mainView.findViewById<TextView>(R.id.sub_total_textview).text = getString(R.string.sub_total) +
                 " $" + totalPrice
+    }
+
+    fun showDetailFragment(productID: Int) {
+        (activity as MainActivity).showDetailFragment(productID)
     }
 }

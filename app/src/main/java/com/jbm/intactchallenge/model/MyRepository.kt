@@ -5,6 +5,7 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.jbm.intactchallenge.MainFragment
 import com.jbm.intactchallenge.R
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -23,6 +24,13 @@ class MyRepository (c: Context, v: View){
     //inteface use to update ui when data is ready
     var view = v
 
+    fun getPoductByID(id: Int): Product {
+        for (product in catalog) {
+            if (product.id == id)
+                return product
+        }
+        return Product()
+    }
 
     fun loadJsonfromUrl () {
         val jsonObjectRequest = JsonObjectRequest(
