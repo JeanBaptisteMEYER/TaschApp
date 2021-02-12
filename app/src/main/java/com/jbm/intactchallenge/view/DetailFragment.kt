@@ -14,11 +14,6 @@ import com.jbm.intactchallenge.model.Constantes
 import kotlin.math.roundToInt
 
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailFragment : Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
@@ -57,7 +52,10 @@ class DetailFragment : Fragment() {
         for (color in product.colors) {
             val colorView =
                 layoutInflater.inflate(R.layout.product_color_view, colorLayout, false)
-            colorView.setBackgroundColor(android.graphics.Color.parseColor(color.code))
+
+            val draw = resources.getDrawable(R.drawable.round_corner_color_shape)
+            draw.setTint(android.graphics.Color.parseColor(color.code))
+            colorView.background = draw
 
             colorLayout.addView(colorView)
         }

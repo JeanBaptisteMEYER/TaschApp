@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
@@ -130,7 +131,10 @@ class HomeFragment : Fragment(), MyRepository.View {
                 for (color in product.colors) {
                     val colorView =
                         layoutInflater.inflate(R.layout.product_color_view, wishlistLayout, false)
-                    colorView.setBackgroundColor(android.graphics.Color.parseColor(color.code))
+
+                    val draw = resources.getDrawable(R.drawable.round_corner_color_shape)
+                    draw.setTint(android.graphics.Color.parseColor(color.code))
+                    colorView.background = draw
 
                     colorLayout.addView(colorView)
                 }

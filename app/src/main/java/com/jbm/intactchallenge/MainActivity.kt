@@ -19,20 +19,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        // Instantiate our repo
-        myRepository = MyRepository(this, mainFragment)
+
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.container, mainFragment)
                     .commitNow()
         }
-    }
 
-    override fun onStart() {
-        super.onStart()
-
-        //Ask repo to Get catalog data from the web or local files
+        // Instantiate our repo
+        myRepository = MyRepository(this, mainFragment)
         lifecycleScope.launch { myRepository.loadJsonfromUrl() }
     }
 
