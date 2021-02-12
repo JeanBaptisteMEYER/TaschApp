@@ -1,18 +1,17 @@
 package com.jbm.intactchallenge.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.model.Constantes
+import kotlin.math.roundToInt
 
 
 /**
@@ -37,7 +36,7 @@ class DetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.product_detail_fragment, container, false)
+        val view = inflater.inflate(R.layout.detail_fragment, container, false)
 
         val product = (activity as MainActivity).myRepository.getPoductByID(productId)
 
@@ -67,7 +66,9 @@ class DetailFragment : Fragment() {
                 "W: " + product.size.width + "\n" +
                 "D: " + product.size.depth
 
+        // add to wish list button setup and listener
         val wishlistButton = view.findViewById<Button>(R.id.detail_add_wishlist_button)
+
         if (product.wishListed == 0) {
             wishlistButton.text = getString(R.string.add_to_wishlist)
             wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#EC3331"))
@@ -86,6 +87,14 @@ class DetailFragment : Fragment() {
                 wishlistButton.text = getString(R.string.add_to_wishlist)
                 wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#EC3331"))
             }
+        }
+
+        val ratingStar = view.findViewById<RatingBar>(R.id.detail_rating_start)
+        ratingStar.rating = product.rating
+
+        ratingStar.setOnRatingBarChangeListener { ratingBar, fl, b ->
+            Log.d(TAG, fl.toString() + "   " + fl.roundToInt().toString())
+            product.rating = fl
         }
 
         // set actionbar title with product title

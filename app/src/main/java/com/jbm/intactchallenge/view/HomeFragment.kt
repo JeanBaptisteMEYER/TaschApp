@@ -1,7 +1,6 @@
 package com.jbm.intactchallenge.view
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -13,15 +12,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.model.MyRepository
-import kotlinx.coroutines.launch
 
 
-class MainFragment : Fragment(), MyRepository.View {
+class HomeFragment : Fragment(), MyRepository.View {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
@@ -30,12 +27,12 @@ class MainFragment : Fragment(), MyRepository.View {
     lateinit var wishlistLayout: LinearLayout
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = HomeFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        mainView = inflater.inflate(R.layout.main_fragment, container,false)
+        mainView = inflater.inflate(R.layout.home_fragment, container,false)
 
         catalogLayout = mainView.findViewById(R.id.catalog_layout)
         wishlistLayout = mainView.findViewById(R.id.wishlist_layout)

@@ -7,13 +7,13 @@ import androidx.lifecycle.lifecycleScope
 import com.jbm.intactchallenge.model.Constantes
 import com.jbm.intactchallenge.model.MyRepository
 import com.jbm.intactchallenge.view.DetailFragment
-import com.jbm.intactchallenge.view.MainFragment
+import com.jbm.intactchallenge.view.HomeFragment
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var myRepository: MyRepository
-    val mainFragment = MainFragment.newInstance()
+    val mainFragment = HomeFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

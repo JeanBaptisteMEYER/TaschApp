@@ -12,7 +12,7 @@ class Product {
     var size = Size("","","")
     var quantityInStock = 0
     var wishListed = 0
-    var rating = 0
+    var rating = 0.toFloat()
 
     @Override
     override fun toString(): String {
