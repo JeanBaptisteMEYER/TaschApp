@@ -6,12 +6,12 @@ class Product {
     var brand = ""
     var shordDescription = ""
     var fullDescription = ""
-    var price = 0.0
+    var price = 0
     var imageUrl = ""
     var colors: MutableList<Color> = mutableListOf()
     var size = Size("","","")
     var quantityInStock = 0
-    var wishListed = 0
+    var wishListed = 1
     var rating = 0
 
     @Override

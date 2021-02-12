@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">TASCH</string>
     <string name="your_wish_list">Your Wish List</string>
-    <string name="product_catalogue">Product Catalogue</string>
+    <string name="product_catalog">Product Catalog</string>
     <string name="total">Total</string>
     <string name="sub_total">Sub-total</string>
     <string name="free_shipping">Free Shipping World Wide</string>
     <string name="proceed_to_checkout">Proceed to check out</string>
+    <string name="out_of_stock">Out of stock</string>
 </resources>
