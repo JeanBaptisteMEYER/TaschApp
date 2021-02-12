@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainFragment">
+    tools:context=".view.MainFragment">
 
     <!-- Main scrolling view -->
     <ScrollView
@@ -105,7 +105,7 @@
                     android:textColor="#5F9C89"/>
 
                 <Button
-                    android:id="@+id/checkou_button"
+                    android:id="@+id/checkout_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

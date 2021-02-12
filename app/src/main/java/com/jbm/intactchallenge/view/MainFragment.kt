@@ -1,6 +1,8 @@
-package com.jbm.intactchallenge
+package com.jbm.intactchallenge.view
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,6 +15,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.jbm.intactchallenge.MainActivity
+import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.model.MyRepository
 import kotlinx.coroutines.launch
 
@@ -29,22 +33,32 @@ class MainFragment : Fragment(), MyRepository.View {
         fun newInstance() = MainFragment()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (activity as MainActivity).myRepository = MyRepository(requireContext(), this)
+        lifecycleScope.launch { (activity as MainActivity).myRepository.loadJsonfromUrl() }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         mainView = inflater.inflate(R.layout.main_fragment, container,false)
 
         catalogLayout = mainView.findViewById(R.id.catalog_layout)
         wishlistLayout = mainView.findViewById(R.id.wishlist_layout)
-        mainView.findViewById<Button>(R.id.checkou_button).setOnClickListener{
-            // clear the wishedlist and update ui
-            for (product in (activity as MainActivity).myRepository.catalog)
-                product.wishListed = 0
 
-            updateWishListUI()
+        mainView.findViewById<Button>(R.id.checkout_button).setOnClickListener{
+            // show dialog to confirm
+            AlertDialog.Builder(activity)
+            .setTitle(R.string.alert_dialog_title)
+            .setPositiveButton(
+                R.string.alert_dialog_ok,
+                DialogInterface.OnClickListener{ dialog, whichButton -> this.doPositiveClick() }
+            )
+            .setNegativeButton(
+                R.string.alert_dialog_cancel,
+                DialogInterface.OnClickListener { dialog, whichButton -> this.doNegativeClick() }
+            ).show()
         }
-
-        (activity as MainActivity).myRepository = MyRepository(requireContext(), this)
-        lifecycleScope.launch { (activity as MainActivity).myRepository.loadJsonfromUrl() }
 
         requireActivity().title = getString(R.string.app_name)
 
@@ -157,5 +171,17 @@ class MainFragment : Fragment(), MyRepository.View {
 
     fun showDetailFragment(productID: Int) {
         (activity as MainActivity).showDetailFragment(productID)
+    }
+
+    fun doPositiveClick() {
+        // clear the wishedlist and update ui
+        for (product in (activity as MainActivity).myRepository.catalog)
+            product.wishListed = 0
+
+        updateWishListUI()
+    }
+
+    fun doNegativeClick() {
+        //do nothing
     }
 }

@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.core.os.bundleOf
 import com.jbm.intactchallenge.model.Constantes
 import com.jbm.intactchallenge.model.MyRepository
+import com.jbm.intactchallenge.view.DetailFragment
+import com.jbm.intactchallenge.view.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

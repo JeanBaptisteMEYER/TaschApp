@@ -11,7 +11,7 @@ class Product {
     var colors: MutableList<Color> = mutableListOf()
     var size = Size("","","")
     var quantityInStock = 0
-    var wishListed = 1
+    var wishListed = 0
     var rating = 0
 
     @Override

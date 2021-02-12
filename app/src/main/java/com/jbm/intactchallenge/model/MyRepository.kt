@@ -5,7 +5,6 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
-import com.jbm.intactchallenge.MainFragment
 import com.jbm.intactchallenge.R
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch

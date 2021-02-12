@@ -1,17 +1,18 @@
-package com.jbm.intactchallenge
+package com.jbm.intactchallenge.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.jbm.intactchallenge.MainActivity
+import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.model.Constantes
-import org.w3c.dom.Text
 
 
 /**
@@ -66,6 +67,28 @@ class DetailFragment : Fragment() {
                 "W: " + product.size.width + "\n" +
                 "D: " + product.size.depth
 
+        val wishlistButton = view.findViewById<Button>(R.id.detail_add_wishlist_button)
+        if (product.wishListed == 0) {
+            wishlistButton.text = getString(R.string.add_to_wishlist)
+            wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#EC3331"))
+        } else {
+            wishlistButton.text = getString(R.string.remove_to_wishlist)
+            wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
+        }
+
+        wishlistButton.setOnClickListener {
+            if ((it as Button).text.equals(getString(R.string.add_to_wishlist))) {
+                product.wishListed = 1
+                wishlistButton.text = getString(R.string.remove_to_wishlist)
+                wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
+            } else {
+                product.wishListed = 0
+                wishlistButton.text = getString(R.string.add_to_wishlist)
+                wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#EC3331"))
+            }
+        }
+
+        // set actionbar title with product title
         requireActivity().title = product.title
 
         return view
