@@ -83,15 +83,12 @@ class DetailFragment : Fragment() {
         }
 
         wishlistButton.setOnClickListener {
-            if ((it as Button).text.equals(getString(R.string.add_to_wishlist))) {
+            if ((it as Button).text.equals(getString(R.string.add_to_wishlist)))
                 product.wishListed = 1
-                wishlistButton.text = getString(R.string.remove_to_wishlist)
-                wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
-            } else {
+            else
                 product.wishListed = 0
-                wishlistButton.text = getString(R.string.add_to_wishlist)
-                wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#EC3331"))
-            }
+
+            fragmentManager?.popBackStack()
         }
 
         val ratingStar = view.findViewById<RatingBar>(R.id.detail_rating_start)
