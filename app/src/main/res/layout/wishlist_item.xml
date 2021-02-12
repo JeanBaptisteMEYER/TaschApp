@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/round_corner_white_shape"
     android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginBottom="8dp"
+    android:foreground="?attr/selectableItemBackgroundBorderless">
 
     <ImageView
         android:id="@+id/wishlist_item_image"

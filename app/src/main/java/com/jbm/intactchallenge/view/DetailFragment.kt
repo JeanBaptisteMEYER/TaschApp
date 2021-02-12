@@ -22,6 +22,7 @@ class DetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
+            // the ID of the selected product
             productId = it.getInt(Constantes().ID_PARAM)
         }
     }
@@ -30,9 +31,12 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.detail_fragment, container, false)
+        // Our initView Function will build our view and returns it
+        return initView(inflater.inflate(R.layout.detail_fragment, container, false))
+    }
 
+    fun initView(view: View): View {
+        // get the product that has been selected
         val product = (activity as MainActivity).myRepository.getPoductByID(productId)
 
         Glide
@@ -51,18 +55,21 @@ class DetailFragment : Fragment() {
 
         for (color in product.colors) {
             val colorView =
-                layoutInflater.inflate(R.layout.product_color_view, colorLayout, false)
+                layoutInflater.inflate(R.layout.color_view, colorLayout, false)
 
-            val draw = resources.getDrawable(R.drawable.round_corner_color_shape)
-            draw.setTint(android.graphics.Color.parseColor(color.code))
-            colorView.background = draw
+            val background = resources.getDrawable(R.drawable.round_corner_color_shape)
+            background.setTint(android.graphics.Color.parseColor(color.code))
+            colorView.background = background
+
+            //colorView.layoutParams = LinearLayout.LayoutParams(60, 60)
+            //colorView.requestLayout()
 
             colorLayout.addView(colorView)
         }
 
-        view.findViewById<TextView>(R.id.detail_size).text = "H: " + product.size.height + "\n" +
+        ("H: " + product.size.height + "\n" +
                 "W: " + product.size.width + "\n" +
-                "D: " + product.size.depth
+                "D: " + product.size.depth).also { view.findViewById<TextView>(R.id.detail_size).text = it }
 
         // add to wish list button setup and listener
         val wishlistButton = view.findViewById<Button>(R.id.detail_add_wishlist_button)

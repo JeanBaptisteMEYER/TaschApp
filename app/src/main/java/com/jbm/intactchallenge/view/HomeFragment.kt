@@ -52,6 +52,7 @@ class HomeFragment : Fragment(), MyRepository.View {
             ).show()
         }
 
+        //Change Actionbar title to app name
         requireActivity().title = getString(R.string.app_name)
 
         return mainView
@@ -96,6 +97,7 @@ class HomeFragment : Fragment(), MyRepository.View {
         }
     }
 
+    // this will update the Wishlist part of the UI.
     fun updateWishListUI () {
 
         var totalPrice = 0
@@ -130,11 +132,11 @@ class HomeFragment : Fragment(), MyRepository.View {
 
                 for (color in product.colors) {
                     val colorView =
-                        layoutInflater.inflate(R.layout.product_color_view, wishlistLayout, false)
+                        layoutInflater.inflate(R.layout.color_view, wishlistLayout, false)
 
-                    val draw = resources.getDrawable(R.drawable.round_corner_color_shape)
-                    draw.setTint(android.graphics.Color.parseColor(color.code))
-                    colorView.background = draw
+                    val background = resources.getDrawable(R.drawable.round_corner_color_shape)
+                    background.setTint(android.graphics.Color.parseColor(color.code))
+                    colorView.background = background
 
                     colorLayout.addView(colorView)
                 }
