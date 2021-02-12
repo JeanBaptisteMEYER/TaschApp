@@ -33,12 +33,6 @@ class MainFragment : Fragment(), MyRepository.View {
         fun newInstance() = MainFragment()
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        (activity as MainActivity).myRepository = MyRepository(requireContext(), this)
-        lifecycleScope.launch { (activity as MainActivity).myRepository.loadJsonfromUrl() }
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         mainView = inflater.inflate(R.layout.main_fragment, container,false)
