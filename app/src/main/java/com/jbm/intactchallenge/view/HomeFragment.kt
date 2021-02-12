@@ -12,7 +12,6 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
@@ -23,9 +22,10 @@ class HomeFragment : Fragment(), MyRepository.View {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    lateinit var mainView: View
     lateinit var catalogLayout: LinearLayout
     lateinit var wishlistLayout: LinearLayout
+    lateinit var subTotalTextView: TextView
+    lateinit var totalTextView: TextView
 
     companion object {
         fun newInstance() = HomeFragment()
@@ -33,29 +33,7 @@ class HomeFragment : Fragment(), MyRepository.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        mainView = inflater.inflate(R.layout.home_fragment, container,false)
-
-        catalogLayout = mainView.findViewById(R.id.catalog_layout)
-        wishlistLayout = mainView.findViewById(R.id.wishlist_layout)
-
-        mainView.findViewById<Button>(R.id.checkout_button).setOnClickListener{
-            // show dialog to confirm
-            AlertDialog.Builder(activity)
-            .setTitle(R.string.alert_dialog_title)
-            .setPositiveButton(
-                R.string.alert_dialog_ok,
-                DialogInterface.OnClickListener{ dialog, whichButton -> this.doPositiveClick() }
-            )
-            .setNegativeButton(
-                R.string.alert_dialog_cancel,
-                DialogInterface.OnClickListener { dialog, whichButton -> this.doNegativeClick() }
-            ).show()
-        }
-
-        //Change Actionbar title to app name
-        requireActivity().title = getString(R.string.app_name)
-
-        return mainView
+        return initView(inflater.inflate(R.layout.home_fragment, container,false))
     }
 
     override fun onStart() {
@@ -67,6 +45,34 @@ class HomeFragment : Fragment(), MyRepository.View {
     override fun onCatalogUpdate() {
         updateWishListUI()
         updateCatalogUI()
+    }
+
+    fun initView(view: View): View {
+
+        catalogLayout = view.findViewById(R.id.catalog_layout)
+        wishlistLayout = view.findViewById(R.id.wishlist_layout)
+
+        subTotalTextView = view.findViewById(R.id.sub_total_textview)
+        totalTextView = view.findViewById(R.id.total_textview)
+
+        view.findViewById<Button>(R.id.checkout_button).setOnClickListener{
+            // show dialog to confirm
+            AlertDialog.Builder(activity)
+                .setTitle(R.string.alert_dialog_title)
+                .setPositiveButton(
+                    R.string.alert_dialog_ok,
+                    DialogInterface.OnClickListener{ _, _ -> this.doPositiveClick() }
+                )
+                .setNegativeButton(
+                    R.string.alert_dialog_cancel,
+                    DialogInterface.OnClickListener { _, _ -> this.doNegativeClick() }
+                ).show()
+        }
+
+        //Change Actionbar title to app name
+        requireActivity().title = getString(R.string.app_name)
+
+        return view
     }
 
     fun updateCatalogUI() {
@@ -86,7 +92,7 @@ class HomeFragment : Fragment(), MyRepository.View {
                 .load(product.imageUrl)
                 .centerCrop()
                 .override(200, 200)
-                .into(productView.findViewById<ImageView>(R.id.catalog_item_image));
+                .into(productView.findViewById(R.id.catalog_item_image));
 
             productView.setOnClickListener {
                 showDetailFragment(product.id)
@@ -111,8 +117,7 @@ class HomeFragment : Fragment(), MyRepository.View {
                 //add price to total price
                 totalPrice = totalPrice + product.price
 
-                wishedProductView.findViewById<TextView>(R.id.wishlist_item_price).text =
-                    "$" + product.price.toString()
+                ("$" + product.price.toString()).also { wishedProductView.findViewById<TextView>(R.id.wishlist_item_price).text = it }
                 wishedProductView.findViewById<TextView>(R.id.wishlist_item_title).text =
                     product.title
                 wishedProductView.findViewById<TextView>(R.id.wishlist_item_short_description).text =
@@ -160,10 +165,8 @@ class HomeFragment : Fragment(), MyRepository.View {
         }
 
         //update total price in the UI
-        mainView.findViewById<TextView>(R.id.total_textview).text = getString(R.string.total) +
-                " $" + totalPrice
-        mainView.findViewById<TextView>(R.id.sub_total_textview).text = getString(R.string.sub_total) +
-                " $" + totalPrice
+        (getString(R.string.total) + " " +  getString(R.string.currency) + totalPrice).also { totalTextView.text = it }
+        (" " + getString(R.string.currency) + totalPrice).also { subTotalTextView.text = it }
     }
 
     fun showDetailFragment(productID: Int) {

@@ -17,6 +17,7 @@ class MyRepository (c: Context, v: View){
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
     val url = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
+
     var catalog = mutableListOf<Product>()
 
     val context = c

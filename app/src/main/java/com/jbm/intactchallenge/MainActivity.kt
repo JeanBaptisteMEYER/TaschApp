@@ -12,8 +12,10 @@ import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
+    // Repo for access to Models
     lateinit var myRepository: MyRepository
-    val mainFragment = HomeFragment.newInstance()
+
+    val homeFragment = HomeFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,12 +25,14 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, mainFragment)
+                    .replace(R.id.container, homeFragment)
                     .commitNow()
         }
 
         // Instantiate our repo
-        myRepository = MyRepository(this, mainFragment)
+        myRepository = MyRepository(this, homeFragment)
+
+        //LoadJson with a coroutine
         lifecycleScope.launch { myRepository.loadJsonfromUrl() }
     }
 

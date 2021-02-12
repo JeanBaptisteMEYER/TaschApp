@@ -55,14 +55,11 @@ class DetailFragment : Fragment() {
 
         for (color in product.colors) {
             val colorView =
-                layoutInflater.inflate(R.layout.color_view, colorLayout, false)
+                layoutInflater.inflate(R.layout.color_view_big, colorLayout, false)
 
             val background = resources.getDrawable(R.drawable.round_corner_color_shape)
             background.setTint(android.graphics.Color.parseColor(color.code))
             colorView.background = background
-
-            //colorView.layoutParams = LinearLayout.LayoutParams(60, 60)
-            //colorView.requestLayout()
 
             colorLayout.addView(colorView)
         }
