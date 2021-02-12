@@ -3,14 +3,15 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="#FFFFFF"
+    android:background="@drawable/round_corner_white_shape"
     android:layout_margin="4dp">
 
     <ImageView
         android:id="@+id/catalog_item_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="4dp"/>
 
     <TextView
         android:id="@+id/catalog_item_title"

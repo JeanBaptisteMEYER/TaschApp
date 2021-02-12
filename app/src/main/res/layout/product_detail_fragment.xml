@@ -26,7 +26,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/round_corner_white_shape"
         android:padding="4dp">
 
         <LinearLayout
@@ -108,7 +108,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/detail_info_layout"
         android:layout_margin="8dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/round_corner_white_shape"
         android:padding="4dp">
 
         <TextView
