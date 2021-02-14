@@ -1,9 +1,10 @@
 package com.jbm.intactchallenge.view
 
 import android.app.AlertDialog
-import android.content.DialogInterface
+import android.content.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,15 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
+import com.jbm.intactchallenge.utils.Constants
+import com.jbm.intactchallenge.model.HomeFragmentInterface
 import com.jbm.intactchallenge.model.MyRepository
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
-class HomeFragment : Fragment(), MyRepository.View {
+@AndroidEntryPoint
+class HomeFragment: Fragment() {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
@@ -27,26 +33,55 @@ class HomeFragment : Fragment(), MyRepository.View {
     lateinit var subTotalTextView: TextView
     lateinit var totalTextView: TextView
 
-    companion object {
-        fun newInstance() = HomeFragment()
+    @Inject lateinit var myRepository: MyRepository
+
+    val mBraodcastReceiver = object : BroadcastReceiver() {
+        @Override
+        override fun onReceive(p0: Context?, p1: Intent?) {
+            when(p1?.action) {
+                Constants().BROADCAST_ID_CATALOG_UPDATE -> updateHomeUI()
+            }
+        }
     }
 
+    @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return initView(inflater.inflate(R.layout.home_fragment, container,false))
     }
 
+    @Override
+    override fun onResume() {
+        super.onResume()
+        //Register to the broadcast Receiver to get notification with our model
+        requireActivity().registerReceiver(mBraodcastReceiver, IntentFilter(Constants().BROADCAST_ID_CATALOG_UPDATE))
+    }
+
+    @Override
     override fun onStart() {
         super.onStart()
         updateCatalogUI()
         updateWishListUI()
     }
 
-    override fun onCatalogUpdate() {
+    @Override
+    override fun onPause() {
+        super.onPause()
+
+        //Unregister to broadcasts
+        requireActivity().unregisterReceiver(mBraodcastReceiver)
+    }
+
+    // Interface function. Will update all views
+    // Gets call when the Repo has downloaded and parsed the Json file into the catalog
+    fun updateHomeUI() {
+        Log.d(TAG, "Home UI Update")
         updateWishListUI()
         updateCatalogUI()
     }
 
+
+    //Initialize all views that are not dependent on the catalog
     fun initView(view: View): View {
 
         catalogLayout = view.findViewById(R.id.catalog_layout)
@@ -79,7 +114,7 @@ class HomeFragment : Fragment(), MyRepository.View {
 
         catalogLayout.removeAllViews()
 
-        for (product in (activity as MainActivity).myRepository.catalog) {
+        for (product in myRepository.catalog) {
             //Inflate the catalog Item layout in the catalog parent View
             val productView: View = layoutInflater.inflate(R.layout.catalog_item, catalogLayout, false)
 
@@ -109,7 +144,9 @@ class HomeFragment : Fragment(), MyRepository.View {
         var totalPrice = 0
         wishlistLayout.removeAllViews()
 
-        for (product in (activity as MainActivity).myRepository.catalog) {
+        Log.d(TAG, "repo = " + myRepository.catalog.toString())
+
+        for (product in myRepository.catalog) {
             if (product.wishListed == 1) {
                 val wishedProductView: View =
                     layoutInflater.inflate(R.layout.wishlist_item, wishlistLayout, false)
@@ -175,7 +212,7 @@ class HomeFragment : Fragment(), MyRepository.View {
 
     fun doPositiveClick() {
         // clear the wishedlist and update ui
-        for (product in (activity as MainActivity).myRepository.catalog)
+        for (product in myRepository.catalog)
             product.wishListed = 0
 
         updateWishListUI()

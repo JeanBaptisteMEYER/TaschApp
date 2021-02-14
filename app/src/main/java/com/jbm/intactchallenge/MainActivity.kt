@@ -2,20 +2,28 @@ package com.jbm.intactchallenge
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
-import com.jbm.intactchallenge.model.Constantes
+import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
 import com.jbm.intactchallenge.view.DetailFragment
 import com.jbm.intactchallenge.view.HomeFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
+@AndroidEntryPoint
+class MainActivity: AppCompatActivity() {
+
+    val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
     // Repo for access to Models
-    lateinit var myRepository: MyRepository
+    @Inject lateinit var myRepository: MyRepository
 
-    val homeFragment = HomeFragment.newInstance()
+    //@Inject lateinit var homeFragment: HomeFragment
+    var homeFragment: HomeFragment = HomeFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +35,14 @@ class MainActivity : AppCompatActivity() {
                     .commitNow()
         }
 
-        // Instantiate our repo
-        myRepository = MyRepository(this, homeFragment)
-
         //LoadJson with a coroutine
-        lifecycleScope.launch { myRepository.loadJsonfromUrl() }
+        lifecycleScope.launch {
+            myRepository.loadJsonfromUrl()
+        }
     }
 
     fun showDetailFragment(productId: Int) {
-        val bundle = bundleOf(Constantes().ID_PARAM to productId)
+        val bundle = bundleOf(Constants().ID_PARAM to productId)
 
         supportFragmentManager.beginTransaction()
             .addToBackStack(null)

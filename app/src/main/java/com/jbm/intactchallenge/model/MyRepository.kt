@@ -1,28 +1,41 @@
 package com.jbm.intactchallenge.model
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.jbm.intactchallenge.R
+import com.jbm.intactchallenge.utils.Constants
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
+import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.math.roundToInt
 
-class MyRepository (c: Context, v: View){
+// for dependency injection
+@Module
+@InstallIn(SingletonComponent::class)
+class MyModule {
+    @Provides @Singleton
+    fun provideRepo(@ApplicationContext context: Context): MyRepository = MyRepository(context)
+}
+
+// Main Class
+class MyRepository @Inject constructor(@ApplicationContext val context: Context) {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    val url = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
-
+    val catalogURL = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
     var catalog = mutableListOf<Product>()
-
-    val context = c
-    //inteface use to update ui when data is ready
-    var view = v
 
     fun getPoductByID(id: Int): Product {
         for (product in catalog) {
@@ -34,7 +47,7 @@ class MyRepository (c: Context, v: View){
 
     fun loadJsonfromUrl () {
         val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
+            Request.Method.GET, catalogURL, null,
             { response ->
                 Log.d(TAG, response.toString())
 
@@ -44,6 +57,7 @@ class MyRepository (c: Context, v: View){
             { error ->
                 Log.d(TAG, "Error receiving Json response from Volley :$error")
                 // if error then get backup JSON from local file
+                Log.d(TAG, "JSON will be loaded from raw folder")
                 MainScope().launch { parseCatalogResponse(getCatalogFromRaw()) }
             })
 
@@ -103,10 +117,8 @@ class MyRepository (c: Context, v: View){
 
         Log.d(TAG, "JSON parsed")
 
-        view.onCatalogUpdate()
+        context.sendBroadcast(Intent().setAction(Constants().BROADCAST_ID_CATALOG_UPDATE))
     }
 
-    interface View {
-        fun onCatalogUpdate()
-    }
+
 }

@@ -8,25 +8,32 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.bumptech.glide.Glide
-import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
-import com.jbm.intactchallenge.model.Constantes
+import com.jbm.intactchallenge.utils.Constants
+import com.jbm.intactchallenge.model.MyRepository
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.math.roundToInt
 
-
+@AndroidEntryPoint
 class DetailFragment : Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
     private var productId: Int = 0
 
+    @Inject lateinit var myRepository: MyRepository
+
+    @Override
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Get the ID of the selected product from argument
         arguments?.let {
-            // the ID of the selected product
-            productId = it.getInt(Constantes().ID_PARAM)
+            productId = it.getInt(Constants().ID_PARAM)
         }
     }
 
+    @Override
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,9 +42,10 @@ class DetailFragment : Fragment() {
         return initView(inflater.inflate(R.layout.detail_fragment, container, false))
     }
 
+    //Initialise all views element.
     fun initView(view: View): View {
         // get the product that has been selected
-        val product = (activity as MainActivity).myRepository.getPoductByID(productId)
+        val product = myRepository.getPoductByID(productId)
 
         Glide
             .with(this)
@@ -107,7 +115,7 @@ class DetailFragment : Fragment() {
         fun newInstance(productId: Int) =
             DetailFragment().apply {
                 arguments = Bundle().apply {
-                    putInt(Constantes().ID_PARAM, productId)
+                    putInt(Constants().ID_PARAM, productId)
                 }
             }
     }
