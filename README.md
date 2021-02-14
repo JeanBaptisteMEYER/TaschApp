@@ -8,4 +8,4 @@ TASCH App
 - Scoll Views, Linear and Constaint layouts, Texts, Rating bars, Buttons
 - Coroutine for data loading
 - Glide for image loading
-- Hilt for dependency Injection
+- Hilt for dependency injection
