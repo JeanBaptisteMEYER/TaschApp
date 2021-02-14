@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.utils.Constants
-import com.jbm.intactchallenge.model.HomeFragmentInterface
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject

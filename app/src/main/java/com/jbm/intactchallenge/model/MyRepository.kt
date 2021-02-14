@@ -119,6 +119,4 @@ class MyRepository @Inject constructor(@ApplicationContext val context: Context)
 
         context.sendBroadcast(Intent().setAction(Constants().BROADCAST_ID_CATALOG_UPDATE))
     }
-
-
 }
