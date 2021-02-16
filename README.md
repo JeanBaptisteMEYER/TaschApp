@@ -5,7 +5,7 @@ TASCH App
 - Two Fragments
 - One Alert Dialog
 - Persistant data between fragments
-- Scoll Views, Linear and Constaint layouts, Texts, Rating bars, Buttons
+- RecyclerView, ScollViews, Linear and Constaint layouts, Texts, Rating bars, Buttons
 - Coroutine for data loading
 - Glide for image loading
 - Hilt for dependency injection
