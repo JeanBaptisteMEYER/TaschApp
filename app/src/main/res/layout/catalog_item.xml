@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:background="@drawable/round_corner_white_shape"
     android:layout_margin="4dp"
-    android:foreground="?attr/selectableItemBackgroundBorderless">
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:onClick="itemCatalogOnClick">
 
     <ImageView
         android:id="@+id/catalog_item_image"

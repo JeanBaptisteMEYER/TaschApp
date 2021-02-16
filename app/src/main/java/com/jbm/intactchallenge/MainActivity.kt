@@ -3,8 +3,10 @@ package com.jbm.intactchallenge
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
+import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
 import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
 import com.jbm.intactchallenge.view.DetailFragment
@@ -39,6 +41,12 @@ class MainActivity: AppCompatActivity() {
         lifecycleScope.launch {
             myRepository.loadJsonfromUrl()
         }
+    }
+
+    // called when an item from the catalog list is clicked
+    fun itemCatalogOnClick(view: View) {
+        showDetailFragment(
+                (homeFragment.catalogRecyclerView.getChildViewHolder(view) as HomeCatalogAdapter.HomeViewHolder).itemID)
     }
 
     fun showDetailFragment(productId: Int) {

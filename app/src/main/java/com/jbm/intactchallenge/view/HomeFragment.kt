@@ -13,9 +13,11 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
+import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
 import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,10 +29,12 @@ class HomeFragment: Fragment() {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    lateinit var catalogLayout: LinearLayout
     lateinit var wishlistLayout: LinearLayout
     lateinit var subTotalTextView: TextView
     lateinit var totalTextView: TextView
+
+    lateinit var catalogRecyclerView: RecyclerView
+    @Inject lateinit var homeCatalogAdapter: HomeCatalogAdapter
 
     @Inject lateinit var myRepository: MyRepository
 
@@ -83,7 +87,9 @@ class HomeFragment: Fragment() {
     //Initialize all views that are not dependent on the catalog
     fun initView(view: View): View {
 
-        catalogLayout = view.findViewById(R.id.catalog_layout)
+        catalogRecyclerView = view.findViewById(R.id.catalog_recyclerview)
+        catalogRecyclerView.adapter = homeCatalogAdapter
+
         wishlistLayout = view.findViewById(R.id.wishlist_layout)
 
         subTotalTextView = view.findViewById(R.id.sub_total_textview)
@@ -110,31 +116,8 @@ class HomeFragment: Fragment() {
     }
 
     fun updateCatalogUI() {
-
-        catalogLayout.removeAllViews()
-
-        for (product in myRepository.catalog) {
-            //Inflate the catalog Item layout in the catalog parent View
-            val productView: View = layoutInflater.inflate(R.layout.catalog_item, catalogLayout, false)
-
-            //Update item title
-            productView.findViewById<TextView>(R.id.catalog_item_title).text = product.title
-
-            //load image into ImageView
-            Glide
-                .with(this)
-                .load(product.imageUrl)
-                .centerCrop()
-                .override(200, 200)
-                .into(productView.findViewById(R.id.catalog_item_image));
-
-            productView.setOnClickListener {
-                showDetailFragment(product.id)
-            }
-
-            //add the new product view to our scrolling view
-            catalogLayout.addView(productView)
-        }
+        homeCatalogAdapter.productList = myRepository.catalog
+        homeCatalogAdapter.notifyDataSetChanged()
     }
 
     // this will update the Wishlist part of the UI.

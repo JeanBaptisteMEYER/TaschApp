@@ -8,26 +8,14 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.utils.Constants
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
-import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.math.roundToInt
 
-// for dependency injection
-@Module
-@InstallIn(SingletonComponent::class)
-class MyModule {
-    @Provides @Singleton
-    fun provideRepo(@ApplicationContext context: Context): MyRepository = MyRepository(context)
-}
 
 // Main Class
 class MyRepository @Inject constructor(@ApplicationContext val context: Context) {
