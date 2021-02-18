@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:background="@drawable/round_corner_white_shape"
-    android:layout_margin="4dp"
-    android:foreground="?attr/selectableItemBackgroundBorderless"
-    android:onClick="itemCatalogOnClick">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ImageView
-        android:id="@+id/catalog_item_image"
+    <data>
+        <variable
+            name="product"
+            type="com.jbm.intactchallenge.model.Product" />
+    </data>
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="4dp"/>
+        android:orientation="vertical"
+        android:background="@drawable/round_corner_white_shape"
+        android:layout_margin="4dp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:onClick="itemCatalogOnClick">
 
-    <TextView
-        android:id="@+id/catalog_item_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="10dp"
-        android:textColor="@color/black"
-        android:textStyle="bold"/>
+        <ImageView
+            android:id="@+id/catalog_item_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="4dp"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/catalog_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="10dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="@{product.title}"/>
+
+    </LinearLayout>
+
+</layout>

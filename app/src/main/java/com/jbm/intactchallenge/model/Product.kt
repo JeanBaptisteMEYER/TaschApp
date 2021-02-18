@@ -1,7 +1,7 @@
 package com.jbm.intactchallenge.model
 
-class Product {
-    var id = 0
+data class Product (var id: Int) {
+    //var id = 0
     var title = ""
     var brand = ""
     var shordDescription = ""
@@ -16,6 +16,6 @@ class Product {
 
     @Override
     override fun toString(): String {
-        return "Title = " + title
+        return "Title = " + title + ", ID = " + id
     }
 }

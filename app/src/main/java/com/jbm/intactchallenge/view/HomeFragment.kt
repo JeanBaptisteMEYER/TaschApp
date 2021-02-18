@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
+import com.jbm.intactchallenge.databinding.WishlistItemBinding
 import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
@@ -95,24 +96,24 @@ class HomeFragment: Fragment() {
         subTotalTextView = view.findViewById(R.id.sub_total_textview)
         totalTextView = view.findViewById(R.id.total_textview)
 
-        view.findViewById<Button>(R.id.checkout_button).setOnClickListener{
-            // show dialog to confirm
-            AlertDialog.Builder(activity)
-                .setTitle(R.string.alert_dialog_title)
-                .setPositiveButton(
-                    R.string.alert_dialog_ok,
-                    DialogInterface.OnClickListener{ _, _ -> this.doPositiveClick() }
-                )
-                .setNegativeButton(
-                    R.string.alert_dialog_cancel,
-                    DialogInterface.OnClickListener { _, _ -> this.doNegativeClick() }
-                ).show()
-        }
-
         //Change Actionbar title to app name
         requireActivity().title = getString(R.string.app_name)
 
         return view
+    }
+
+    // called from activity when the onProceedToCheckOut button is clicked
+    fun onCheckOutClick() {
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.alert_dialog_title)
+            .setPositiveButton(
+                R.string.alert_dialog_ok,
+                DialogInterface.OnClickListener{ _, _ -> this.doPositiveClick() }
+            )
+            .setNegativeButton(
+                R.string.alert_dialog_cancel,
+                DialogInterface.OnClickListener { _, _ -> this.doNegativeClick() }
+            ).show()
     }
 
     fun updateCatalogUI() {
@@ -130,17 +131,12 @@ class HomeFragment: Fragment() {
 
         for (product in myRepository.catalog) {
             if (product.wishListed == 1) {
-                val wishedProductView: View =
-                    layoutInflater.inflate(R.layout.wishlist_item, wishlistLayout, false)
+
+                val binding = WishlistItemBinding.inflate(LayoutInflater.from(context), wishlistLayout, false)
+                binding.product = product
 
                 //add price to total price
                 totalPrice = totalPrice + product.price
-
-                ("$" + product.price.toString()).also { wishedProductView.findViewById<TextView>(R.id.wishlist_item_price).text = it }
-                wishedProductView.findViewById<TextView>(R.id.wishlist_item_title).text =
-                    product.title
-                wishedProductView.findViewById<TextView>(R.id.wishlist_item_short_description).text =
-                    product.shordDescription
 
                 Glide
                     .with(this)
@@ -148,11 +144,11 @@ class HomeFragment: Fragment() {
                     .centerCrop()
                     .override(180, 180)
                     .placeholder(ColorDrawable(android.graphics.Color.BLACK))
-                    .into(wishedProductView.findViewById<ImageView>(R.id.wishlist_item_image));
+                    .into(binding.root.findViewById(R.id.wishlist_item_image));
 
                 // add the colored square to the wishlist item
                 val colorLayout =
-                    wishedProductView.findViewById<LinearLayout>(R.id.wishlist_item_color_layout)
+                    binding.root.findViewById<LinearLayout>(R.id.wishlist_item_color_layout)
 
                 for (color in product.colors) {
                     val colorView =
@@ -165,21 +161,12 @@ class HomeFragment: Fragment() {
                     colorLayout.addView(colorView)
                 }
 
-                //Out of stock
-                val outOfStockView =
-                    wishedProductView.findViewById<TextView>(R.id.wishlist_item_out_of_stock)
-
-                if (product.quantityInStock == 0)
-                    outOfStockView.visibility = View.VISIBLE
-                else
-                    outOfStockView.visibility = View.GONE
-
-                wishedProductView.setOnClickListener {
+                binding.root.setOnClickListener {
                     showDetailFragment(product.id)
                 }
 
                 //add the new product view to our scrolling view
-                wishlistLayout.addView(wishedProductView)
+                wishlistLayout.addView(binding.root)
             }
         }
 

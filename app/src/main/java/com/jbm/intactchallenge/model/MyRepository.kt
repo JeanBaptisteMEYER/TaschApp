@@ -25,14 +25,6 @@ class MyRepository @Inject constructor(@ApplicationContext val context: Context)
     val catalogURL = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
     var catalog = mutableListOf<Product>()
 
-    fun getPoductByID(id: Int): Product {
-        for (product in catalog) {
-            if (product.id == id)
-                return product
-        }
-        return Product()
-    }
-
     fun loadJsonfromUrl () {
         val jsonObjectRequest = JsonObjectRequest(
             Request.Method.GET, catalogURL, null,
@@ -77,10 +69,10 @@ class MyRepository @Inject constructor(@ApplicationContext val context: Context)
                 jsonProductColors = jsonProduct.getJSONArray("colors")
 
             val jsonProductSize = jsonProduct.getJSONObject("size")
-            var newProduct = Product()
+
 
             //Parse standard product info
-            newProduct.id = jsonProduct.getInt("id")
+            var newProduct = Product(jsonProduct.getInt("id"))
             newProduct.title = jsonProduct.getString("title")
             newProduct.brand = jsonProduct.getString("brand")
             newProduct.shordDescription = jsonProduct.getString("short_description")
