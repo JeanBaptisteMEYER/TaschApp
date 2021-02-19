@@ -1,32 +1,28 @@
 package com.jbm.intactchallenge.view
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.R
-import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
-import com.jbm.intactchallenge.databinding.CatalogItemBinding
 import com.jbm.intactchallenge.databinding.DetailFragmentBinding
+import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.utils.Constants
-import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    private var productId: Int = 0
+    //private var productId: Int = 0
+    //@Inject lateinit var mAdapter: HomeCatalogAdapter
 
-    @Inject lateinit var myRepository: MyRepository
-    @Inject lateinit var mAdapter: HomeCatalogAdapter
+    @Inject lateinit var catalog: Catalog
+    private var productId = 0
 
     lateinit var binding: DetailFragmentBinding
 
@@ -45,18 +41,29 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Our initView Function will build our view and returns it
         return bindView(inflater, container)
     }
 
+    override fun onPause() {
+        super.onPause()
+        // save rating
+
+    }
+
     //Initialise all views element.
     fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
+        // create our binding and set our product
         binding = DetailFragmentBinding.inflate(LayoutInflater.from(context),
             container, false)
-
         // get the product that has been selected
-        binding.product = mAdapter.getProductById(productId)
+        binding.product = catalog.getProdctById(productId)
 
+        // set actionbar title with product title
+        requireActivity().title = binding.product!!.title
+
+        // load image with Glide
         Glide
             .with(this)
             .load(binding.product!!.imageUrl)
@@ -79,25 +86,12 @@ class DetailFragment : Fragment() {
             colorLayout.addView(colorView)
         }
 
-        // add to wish list button setup and listener
-        val wishlistButton = binding.root.findViewById<Button>(R.id.detail_add_wishlist_button)
-
-        if (binding.product!!.wishListed == 0) {
-            wishlistButton.text = getString(R.string.add_to_wishlist)
-            wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#EC3331"))
-        } else {
-            wishlistButton.text = getString(R.string.remove_to_wishlist)
-            wishlistButton.setBackgroundColor(android.graphics.Color.parseColor("#000000"))
-        }
 
         //set on ratingChangeListener to our ratingBar
         binding.root.findViewById<RatingBar>(R.id.detail_rating_start).setOnRatingBarChangeListener {
                 ratingBar, fl, b ->
             onRatingBarChange(fl)
         }
-
-        // set actionbar title with product title
-        requireActivity().title = binding.product!!.title
 
         return binding.root
     }

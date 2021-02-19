@@ -28,7 +28,6 @@ class MainActivity: AppCompatActivity() {
     var homeFragment: HomeFragment = HomeFragment()
     var detailFragment: DetailFragment = DetailFragment()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
@@ -45,6 +44,16 @@ class MainActivity: AppCompatActivity() {
         }
     }
 
+    // called from Home layout onCLick
+    fun onCheckOutClick(view: View) {
+        homeFragment.onCheckOutClick()
+    }
+
+    // called from Detail layout onCLick
+    fun onWishListClick (view: View) {
+        detailFragment.onWishListClick(view)
+    }
+
     // called when an item from the catalog list is clicked
     fun itemCatalogOnClick(view: View) {
         showDetailFragment(
@@ -52,14 +61,7 @@ class MainActivity: AppCompatActivity() {
                         as HomeCatalogAdapter.HomeViewHolder).catalogItemBinding.product!!.id)
     }
 
-    fun onCheckOutClick(view: View) {
-        homeFragment.onCheckOutClick()
-    }
-
-    fun onWishListClick (view: View) {
-        detailFragment.onWishListClick(view)
-    }
-
+    // Show detail fragment for the given product
     fun showDetailFragment(productId: Int) {
         detailFragment = DetailFragment.newInstance(productId)
 

@@ -3,45 +3,47 @@ package com.jbm.intactchallenge.model
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.utils.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
+import java.io.IOException
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
 
 // Main Class
-class MyRepository @Inject constructor(@ApplicationContext val context: Context) {
-
+class MyRepository @Inject constructor(
+    @ApplicationContext val context: Context,
+    val catalog: Catalog)
+{
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
     val catalogURL = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
-    var catalog = mutableListOf<Product>()
 
     fun loadJsonfromUrl () {
-        val jsonObjectRequest = JsonObjectRequest(
-            Request.Method.GET, catalogURL, null,
-            { response ->
+        val request = Request.Builder()
+            .url(catalogURL)
+            .build()
+        
+
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
                 Log.d(TAG, response.toString())
 
                 //ParseJSON into a list of product than update UI
-                MainScope().launch { parseCatalogResponse(response) }
-            },
-            { error ->
-                Log.d(TAG, "Error receiving Json response from Volley :$error")
-                // if error then get backup JSON from local file
-                Log.d(TAG, "JSON will be loaded from raw folder")
-                MainScope().launch { parseCatalogResponse(getCatalogFromRaw()) }
-            })
+                MainScope().launch { parseCatalogResponse(JSONObject(response.body?.string())) }
+            }
 
-        Volley.newRequestQueue(context).add(jsonObjectRequest)
+            override fun onFailure(call: Call, e: IOException) {
+                Log.d(TAG, e.toString() + ". /// JSON will be loaded from raw folder")
+                MainScope().launch { parseCatalogResponse(getCatalogFromRaw()) }
+            }
+        })
     }
 
     // this fun get the data from the JSON file in res/raw, parse it and build the list of game
@@ -52,11 +54,8 @@ class MyRepository @Inject constructor(@ApplicationContext val context: Context)
     }
 
     fun parseCatalogResponse(response: JSONObject) {
-
         // clear catalog before to populate it with product from Json
-        synchronized(catalog){
-            catalog.clear()
-        }
+        catalog.productList.clear()
 
         var products = response.getJSONArray("products")
 
@@ -92,7 +91,7 @@ class MyRepository @Inject constructor(@ApplicationContext val context: Context)
                 jsonProductSize.getString("W"),
                 jsonProductSize.getString("D"))
 
-            catalog.add(newProduct)
+            catalog.productList.add(newProduct)
         }
 
         Log.d(TAG, "JSON parsed")

@@ -2,6 +2,7 @@ package com.jbm.intactchallenge.di
 
 import android.content.Context
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
+import com.jbm.intactchallenge.model.Catalog
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +16,6 @@ class HomeCatalogAdapterModule {
     //This will provide the MyRepository instance for hilt injections
     @Provides
     @Singleton
-    fun provideCatalogAdapter(@ApplicationContext context: Context): HomeCatalogAdapter = HomeCatalogAdapter(context)
+    fun provideCatalogAdapter(@ApplicationContext context: Context, catalog: Catalog):
+            HomeCatalogAdapter = HomeCatalogAdapter(context, catalog)
 }

@@ -19,6 +19,7 @@ import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
 import com.jbm.intactchallenge.databinding.WishlistItemBinding
+import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +38,7 @@ class HomeFragment: Fragment() {
     lateinit var catalogRecyclerView: RecyclerView
     @Inject lateinit var homeCatalogAdapter: HomeCatalogAdapter
 
-    @Inject lateinit var myRepository: MyRepository
+    @Inject lateinit var catalog: Catalog
 
     val mBraodcastReceiver = object : BroadcastReceiver() {
         @Override
@@ -117,7 +118,7 @@ class HomeFragment: Fragment() {
     }
 
     fun updateCatalogUI() {
-        homeCatalogAdapter.productList = myRepository.catalog
+        //homeCatalogAdapter.productList = catalog.productList
         homeCatalogAdapter.notifyDataSetChanged()
     }
 
@@ -127,9 +128,9 @@ class HomeFragment: Fragment() {
         var totalPrice = 0
         wishlistLayout.removeAllViews()
 
-        Log.d(TAG, "repo = " + myRepository.catalog.toString())
+        Log.d(TAG, "repo = " + catalog.productList.toString())
 
-        for (product in myRepository.catalog) {
+        for (product in catalog.productList) {
             if (product.wishListed == 1) {
 
                 val binding = WishlistItemBinding.inflate(LayoutInflater.from(context), wishlistLayout, false)
@@ -181,7 +182,7 @@ class HomeFragment: Fragment() {
 
     fun doPositiveClick() {
         // clear the wishedlist and update ui
-        for (product in myRepository.catalog)
+        for (product in catalog.productList)
             product.wishListed = 0
 
         updateWishListUI()

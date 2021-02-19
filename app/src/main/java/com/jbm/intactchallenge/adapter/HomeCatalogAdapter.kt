@@ -7,22 +7,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.databinding.CatalogItemBinding
+import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.model.Product
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 
-class HomeCatalogAdapter @Inject constructor(@ApplicationContext val context: Context):
-        RecyclerView.Adapter<HomeCatalogAdapter.HomeViewHolder>() {
+class HomeCatalogAdapter @Inject constructor(
+    @ApplicationContext val context: Context,
+    val catalog: Catalog): RecyclerView.Adapter<HomeCatalogAdapter.HomeViewHolder>() {
 
-    var productList = mutableListOf<Product>()
-
-    fun getProductById(productId: Int): Product {
-        for (p in productList)
-            if (p.id == productId)
-                return p
-        return Product(-1)
-    }
+    //var productList = mutableListOf<Product>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val catalogItemBinding = CatalogItemBinding.inflate(LayoutInflater.from(parent.context),
@@ -32,7 +27,8 @@ class HomeCatalogAdapter @Inject constructor(@ApplicationContext val context: Co
     }
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        val product = productList[position]
+        val product = catalog.productList.get(position)
+
         holder.bind(product)
 
         Glide
@@ -44,7 +40,7 @@ class HomeCatalogAdapter @Inject constructor(@ApplicationContext val context: Co
     }
 
     override fun getItemCount(): Int {
-        return productList.size
+        return catalog.productList.size
     }
 
     class HomeViewHolder(val catalogItemBinding: CatalogItemBinding):
