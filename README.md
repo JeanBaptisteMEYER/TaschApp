@@ -8,4 +8,5 @@ TASCH App
 - RecyclerView, ScollViews, Linear and Constaint layouts, Texts, Rating bars, Buttons
 - Coroutine for data loading
 - Glide for image loading
+- OKHttp for http calls
 - Hilt for dependency injection
