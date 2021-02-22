@@ -85,7 +85,6 @@ class HomeFragment: Fragment() {
         updateCatalogUI()
     }
 
-
     //Initialize all views that are not dependent on the catalog
     fun initView(view: View): View {
 
@@ -103,22 +102,7 @@ class HomeFragment: Fragment() {
         return view
     }
 
-    // called from activity when the onProceedToCheckOut button is clicked
-    fun onCheckOutClick() {
-        AlertDialog.Builder(activity)
-            .setTitle(R.string.alert_dialog_title)
-            .setPositiveButton(
-                R.string.alert_dialog_ok,
-                DialogInterface.OnClickListener{ _, _ -> this.doPositiveClick() }
-            )
-            .setNegativeButton(
-                R.string.alert_dialog_cancel,
-                DialogInterface.OnClickListener { _, _ -> this.doNegativeClick() }
-            ).show()
-    }
-
     fun updateCatalogUI() {
-        //homeCatalogAdapter.productList = catalog.productList
         homeCatalogAdapter.notifyDataSetChanged()
     }
 
@@ -147,21 +131,6 @@ class HomeFragment: Fragment() {
                     .placeholder(ColorDrawable(android.graphics.Color.BLACK))
                     .into(binding.root.findViewById(R.id.wishlist_item_image));
 
-                // add the colored square to the wishlist item
-                val colorLayout =
-                    binding.root.findViewById<LinearLayout>(R.id.wishlist_item_color_layout)
-
-                for (color in product.colors) {
-                    val colorView =
-                        layoutInflater.inflate(R.layout.color_view, wishlistLayout, false)
-
-                    val background = resources.getDrawable(R.drawable.round_corner_color_shape)
-                    background.setTint(android.graphics.Color.parseColor(color.code))
-                    colorView.background = background
-
-                    colorLayout.addView(colorView)
-                }
-
                 binding.root.setOnClickListener {
                     showDetailFragment(product.id)
                 }
@@ -174,6 +143,20 @@ class HomeFragment: Fragment() {
         //update total price in the UI
         (getString(R.string.total) + " " +  getString(R.string.currency) + totalPrice).also { totalTextView.text = it }
         (" " + getString(R.string.currency) + totalPrice).also { subTotalTextView.text = it }
+    }
+
+    // called from activity when the onProceedToCheckOut button is clicked
+    fun onCheckOutClick() {
+        AlertDialog.Builder(activity)
+            .setTitle(R.string.alert_dialog_title)
+            .setPositiveButton(
+                R.string.alert_dialog_ok,
+                { _, _ -> doPositiveClick() }
+            )
+            .setNegativeButton(
+                R.string.alert_dialog_cancel,
+                { _, _ -> doNegativeClick() }
+            ).show()
     }
 
     fun showDetailFragment(productID: Int) {

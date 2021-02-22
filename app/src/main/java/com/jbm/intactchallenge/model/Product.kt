@@ -14,6 +14,10 @@ data class Product (var id: Int) {
     var wishListed = 0
     var rating = 0.toFloat()
 
+    fun getColorSize(): Int {
+        return colors.size
+    }
+
     @Override
     override fun toString(): String {
         return "Title = " + title + ", ID = " + id

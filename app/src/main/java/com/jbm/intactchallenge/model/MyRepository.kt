@@ -94,7 +94,7 @@ class MyRepository @Inject constructor(
             catalog.productList.add(newProduct)
         }
 
-        Log.d(TAG, "JSON parsed")
+        Log.d(TAG, "JSON parsed " + catalog.productList.toString())
 
         context.sendBroadcast(Intent().setAction(Constants().BROADCAST_ID_CATALOG_UPDATE))
     }

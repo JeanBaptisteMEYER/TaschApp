@@ -71,33 +71,7 @@ class DetailFragment : Fragment() {
             .override(500, 500)
             .into(binding.root.findViewById<ImageView>(R.id.detail_image));
 
-        // add the colored square
-        val colorLayout =
-            binding.root.findViewById<LinearLayout>(R.id.detail_color_layout)
-
-        for (color in binding.product!!.colors) {
-            val colorView =
-                layoutInflater.inflate(R.layout.color_view_big, colorLayout, false)
-
-            val background = resources.getDrawable(R.drawable.round_corner_color_shape)
-            background.setTint(android.graphics.Color.parseColor(color.code))
-            colorView.background = background
-
-            colorLayout.addView(colorView)
-        }
-
-
-        //set on ratingChangeListener to our ratingBar
-        binding.root.findViewById<RatingBar>(R.id.detail_rating_start).setOnRatingBarChangeListener {
-                ratingBar, fl, b ->
-            onRatingBarChange(fl)
-        }
-
         return binding.root
-    }
-
-    fun onRatingBarChange (rating: Float) {
-        binding.product!!.rating = rating
     }
 
     fun onWishListClick(view: View) {

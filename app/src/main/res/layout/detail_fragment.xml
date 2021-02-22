@@ -7,6 +7,7 @@
             type="com.jbm.intactchallenge.model.Product" />
         
         <import type="android.graphics.Color"/>
+        <import type="android.view.View"/>
     </data>
 
     <ScrollView
@@ -86,6 +87,46 @@
                         android:textStyle="bold"
                         android:layout_marginEnd="16dp"/>
 
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginRight="8dp"
+                        android:visibility="@{product.getColorSize &lt; 1 ? View.GONE : View.VISIBLE}"
+                        android:background="@drawable/round_corner_color_shape"
+                        android:backgroundTint='@{Color.parseColor(product.colors[0].code ?? "#000000")}'/>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginRight="8dp"
+                        android:visibility="@{product.getColorSize &lt; 2 ? View.GONE : View.VISIBLE}"
+                        android:background="@drawable/round_corner_color_shape"
+                        android:backgroundTint='@{Color.parseColor(product.colors[1].code ?? "#000000")}'/>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginRight="8dp"
+                        android:visibility="@{product.getColorSize &lt; 3 ? View.GONE : View.VISIBLE}"
+                        android:background="@drawable/round_corner_color_shape"
+                        android:backgroundTint='@{Color.parseColor(product.colors[2].code ?? "#000000")}'/>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginRight="8dp"
+                        android:visibility="@{product.getColorSize &lt; 4 ? View.GONE : View.VISIBLE}"
+                        android:background="@drawable/round_corner_color_shape"
+                        android:backgroundTint='@{Color.parseColor(product.colors[3].code ?? "#000000")}'/>
+
+                    <ImageView
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:visibility="@{product.getColorSize &lt; 5 ? View.GONE : View.VISIBLE}"
+                        android:background="@drawable/round_corner_color_shape"
+                        android:backgroundTint='@{Color.parseColor(product.colors[4].code ?? "#000000")}'/>
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -143,7 +184,7 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    android:rating="@{product.rating}" />
+                    android:rating="@={product.rating}" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,6 +5,8 @@
         <variable
             name="product"
             type="com.jbm.intactchallenge.model.Product" />
+
+        <import type="android.graphics.Color"/>
         <import type="android.view.View"/>
     </data>
 
@@ -68,7 +70,48 @@
                 android:id="@+id/wishlist_item_color_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"/>
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="4dp"
+                    android:visibility="@{product.getColorSize &lt; 1 ? View.GONE : View.VISIBLE}"
+                    android:background="@drawable/round_corner_color_shape"
+                    android:backgroundTint='@{Color.parseColor(product.colors[0].code ?? "#000000")}'/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="4dp"
+                    android:visibility="@{product.getColorSize &lt; 2 ? View.GONE : View.VISIBLE}"
+                    android:background="@drawable/round_corner_color_shape"
+                    android:backgroundTint='@{Color.parseColor(product.colors[1].code ?? "#000000")}'/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="4dp"
+                    android:visibility="@{product.getColorSize &lt; 3 ? View.GONE : View.VISIBLE}"
+                    android:background="@drawable/round_corner_color_shape"
+                    android:backgroundTint='@{Color.parseColor(product.colors[2].code ?? "#000000")}'/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginRight="4dp"
+                    android:visibility="@{product.getColorSize &lt; 4 ? View.GONE : View.VISIBLE}"
+                    android:background="@drawable/round_corner_color_shape"
+                    android:backgroundTint='@{Color.parseColor(product.colors[3].code ?? "#000000")}'/>
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:visibility="@{product.getColorSize &lt; 5 ? View.GONE : View.VISIBLE}"
+                    android:background="@drawable/round_corner_color_shape"
+                    android:backgroundTint='@{Color.parseColor(product.colors[4].code ?? "#000000")}'/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
