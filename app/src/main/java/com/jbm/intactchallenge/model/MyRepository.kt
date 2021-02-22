@@ -55,7 +55,7 @@ class MyRepository @Inject constructor(
 
     fun parseCatalogResponse(response: JSONObject) {
         // clear catalog before to populate it with product from Json
-        catalog.productList.clear()
+        liveCatalog.value?.productList?.clear()
 
         var products = response.getJSONArray("products")
 
@@ -96,5 +96,16 @@ class MyRepository @Inject constructor(
         }
 
         Log.d(TAG, "JSON parsed " + catalog.productList.toString())
+    }
+
+    fun checkOut() {
+        for (product in liveCatalog.value!!.productList) {
+            product.wishListed = 0
+        }
+
+        liveCatalog.value?.updateCheckOutPrice()
+
+        // notify
+        liveCatalog.value = liveCatalog.value
     }
 }

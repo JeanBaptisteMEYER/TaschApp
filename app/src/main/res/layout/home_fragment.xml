@@ -1,131 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Main scrolling view -->
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    android:background="#D9D9D9"
-    android:scrollbars="none"
-    tools:context=".view.HomeFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <data>
+        <variable
+            name="catalog"
+            type="com.jbm.intactchallenge.model.Catalog" />
+    </data>
+
+    <!-- Main scrolling view -->
+    <ScrollView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#D9D9D9"
+        android:scrollbars="none">
 
-        <!-- Catalog erea -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/product_catalog"
-            android:padding="8dp"
-            android:textSize="18dp"
-            android:textColor="#000000"
-            android:textStyle="bold"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/catalog_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:context="com.jbm.intactchallenge.MainActivity"
-            tools:listitem="@layout/catalog_item"
-            android:layout_marginBottom="8dp"/>
-
-        <!-- Wish list erea -->
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:background="#F1F0F6"
-            android:padding="8dp">
+            android:layout_marginTop="8dp">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="left"
-                    android:text="@string/your_wish_list"
-                    android:textSize="18dp"
-                    android:textColor="#000000"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:id="@+id/total_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="right"
-                    android:text="@string/total" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/wishlist_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/sub_total"
-                    android:gravity="end"
-                    android:layout_marginTop="24dp"
-                    android:textStyle="bold"
-                    android:textSize="18dp"
-                    android:textColor="#000000"
-                    android:layout_weight="1"/>
-
-                <TextView
-                    android:id="@+id/sub_total_textview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:layout_marginTop="24dp"
-                    android:textSize="24dp"
-                    android:textColor="#000000"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
+            <!-- Catalog erea -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/free_shipping"
-                android:gravity="center"
-                android:textColor="#5F9C89"/>
+                android:text="@string/product_catalog"
+                android:padding="8dp"
+                android:textSize="18dp"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
 
-            <Button
-                android:id="@+id/checkout_button"
-                android:layout_width="wrap_content"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/catalog_recyclerview"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/proceed_to_checkout"
-                android:backgroundTint="#EC3331"
-                android:layout_margin="24dp"
-                android:onClick="onCheckOutClick"/>
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:context="com.jbm.intactchallenge.MainActivity"
+                tools:listitem="@layout/catalog_item"
+                android:layout_marginBottom="8dp"/>
 
+            <!-- Wish list erea -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="#F1F0F6"
+                android:padding="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="@string/your_wish_list"
+                        android:textSize="18dp"
+                        android:textColor="#000000"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/total_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        android:text='@{@string/total + " " + @string/currency + catalog.checkOutPrice}' />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/wishlist_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sub_total"
+                        android:gravity="end"
+                        android:layout_marginTop="24dp"
+                        android:textStyle="bold"
+                        android:textSize="18dp"
+                        android:textColor="#000000"
+                        android:layout_weight="1"/>
+
+                    <TextView
+                        android:id="@+id/sub_total_textview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="start"
+                        android:layout_marginTop="24dp"
+                        android:paddingStart="4dp"
+                        android:textSize="24dp"
+                        android:textColor="#000000"
+                        android:layout_weight="1"
+                        android:text="@{@string/currency + catalog.checkOutPrice}"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/free_shipping"
+                    android:gravity="center"
+                    android:textColor="#5F9C89"/>
+
+                <Button
+                    android:id="@+id/checkout_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="@string/proceed_to_checkout"
+                    android:backgroundTint="#EC3331"
+                    android:layout_margin="24dp"
+                    android:onClick="onCheckOutClick"/>
+
+            </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</layout>

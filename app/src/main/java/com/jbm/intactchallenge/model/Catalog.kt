@@ -6,19 +6,23 @@ import javax.inject.Inject
 
 class Catalog @Inject constructor() {
     var productList = mutableListOf<Product>()
+    var checkOutPrice = 0
 
     fun getProdctById(productId: Int): Product {
         return productList.find { it.id == productId }!!
     }
 
-    fun getCheckOutPrice(): Int {
-        var totPrice = 0
+    fun updateCheckOutPrice() {
+        checkOutPrice = 0
 
         for (p in productList) {
             if (p.wishListed == 1)
-                totPrice += p.price
+                checkOutPrice += p.price
         }
+    }
 
-        return totPrice
+    @Override
+    override fun toString(): String {
+        return "CheckOut Price = " + checkOutPrice + " - "+ productList.toString()
     }
 }

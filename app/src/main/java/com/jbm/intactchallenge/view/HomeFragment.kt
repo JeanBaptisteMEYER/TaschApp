@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
 import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
+import com.jbm.intactchallenge.databinding.HomeFragmentBinding
 import com.jbm.intactchallenge.databinding.WishlistItemBinding
 import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.model.MyRepository
@@ -29,77 +30,78 @@ class HomeFragment: Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
     lateinit var wishlistLayout: LinearLayout
-    lateinit var subTotalTextView: TextView
-    lateinit var totalTextView: TextView
 
     lateinit var catalogRecyclerView: RecyclerView
     @Inject lateinit var homeCatalogAdapter: HomeCatalogAdapter
 
     @Inject lateinit var catalog: Catalog
-
     @Inject lateinit var myRepository: MyRepository
 
-    //private val model: HomeViewModel by activityViewModels()
+    lateinit var binding: HomeFragmentBinding
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return initView(inflater.inflate(R.layout.home_fragment, container,false))
+
+        return bindView(inflater, container)
     }
 
     @Override
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //observe our live Catalog and update UI when its data change
         myRepository.liveCatalog.observe(viewLifecycleOwner, Observer<Catalog> {
-                catalog -> Log.d(TAG, "Catalog Live data changed " + catalog.productList.toString())
-                updateHomeUI()
+            catalog -> Log.d(TAG, "Catalog Live data changed " + catalog.toString())
+            updateHomeUI()
         })
     }
 
     @Override
     override fun onStart() {
         super.onStart()
-        updateCatalogUI()
-        updateWishListUI()
+        updateHomeUI()
     }
 
-    // Interface function. Will update all views
-    // Gets call when the Repo has downloaded and parsed the Json file into the catalog
-    fun updateHomeUI() {
-        Log.d(TAG, "Home UI Update")
-        updateWishListUI()
-        updateCatalogUI()
-    }
-
-    //Initialize all views that are not dependent on the catalog
-    fun initView(view: View): View {
-
-        catalogRecyclerView = view.findViewById(R.id.catalog_recyclerview)
-        catalogRecyclerView.adapter = homeCatalogAdapter
-
-        wishlistLayout = view.findViewById(R.id.wishlist_layout)
-
-        subTotalTextView = view.findViewById(R.id.sub_total_textview)
-        totalTextView = view.findViewById(R.id.total_textview)
-
+    fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
         //Change Actionbar title to app name
         requireActivity().title = getString(R.string.app_name)
 
-        return view
+        // create and bind view to the catalog
+        binding = HomeFragmentBinding.inflate(LayoutInflater.from(context),
+            container, false)
+
+        binding.catalog = catalog
+
+        // The Recyclecler view that display the catalog
+        catalogRecyclerView = binding.root.findViewById(R.id.catalog_recyclerview)
+        catalogRecyclerView.adapter = homeCatalogAdapter
+
+        wishlistLayout = binding.root.findViewById(R.id.wishlist_layout)
+
+        return binding.root
     }
 
-    fun updateCatalogUI() {
+    // Updage all UI
+    fun updateHomeUI() {
+        Log.d(TAG, "Home UI Update")
+
+        // catalog recycler view update
         homeCatalogAdapter.notifyDataSetChanged()
+
+        // refresh Home UI - for Wishlist total price
+        binding.invalidateAll()
+
+        // refrech wishList section
+        updateWishListUI()
     }
+
 
     // this will update the Wishlist part of the UI.
     fun updateWishListUI () {
-
         var totalPrice = 0
         wishlistLayout.removeAllViews()
 
-        //Log.d(TAG, "repo = " + catalog.productList.toString())
 
         for (product in catalog.productList) {
             if (product.wishListed == 1) {
@@ -126,10 +128,6 @@ class HomeFragment: Fragment() {
                 wishlistLayout.addView(binding.root)
             }
         }
-
-        //update total price in the UI
-        (getString(R.string.total) + " " +  getString(R.string.currency) + totalPrice).also { totalTextView.text = it }
-        (" " + getString(R.string.currency) + totalPrice).also { subTotalTextView.text = it }
     }
 
     // called from activity when the onProceedToCheckOut button is clicked
@@ -152,10 +150,8 @@ class HomeFragment: Fragment() {
 
     fun doPositiveClick() {
         // clear the wishedlist and update ui
-        for (product in catalog.productList)
-            product.wishListed = 0
+        myRepository.checkOut()
 
-        updateWishListUI()
     }
 
     fun doNegativeClick() {

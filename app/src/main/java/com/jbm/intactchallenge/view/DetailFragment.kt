@@ -71,6 +71,8 @@ class DetailFragment : Fragment() {
         else
             binding.product!!.wishListed = 0
 
+        catalog.updateCheckOutPrice()
+
         fragmentManager?.popBackStack()
     }
 

@@ -20,6 +20,6 @@ data class Product (var id: Int) {
 
     @Override
     override fun toString(): String {
-        return "Title = " + title + ", ID = " + id
+        return "ID = " + id + " Title = " + title + ", wishlisted = " + wishListed + ", Rating = " + rating
     }
 }
