@@ -17,8 +17,7 @@ class HomeCatalogAdapter @Inject constructor(
     @ApplicationContext val context: Context,
     val catalog: Catalog): RecyclerView.Adapter<HomeCatalogAdapter.HomeViewHolder>() {
 
-    //var productList = mutableListOf<Product>()
-
+    @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
         val catalogItemBinding = CatalogItemBinding.inflate(LayoutInflater.from(parent.context),
                 parent, false)
@@ -26,6 +25,7 @@ class HomeCatalogAdapter @Inject constructor(
         return HomeViewHolder(catalogItemBinding)
     }
 
+    @Override
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val product = catalog.productList.get(position)
 

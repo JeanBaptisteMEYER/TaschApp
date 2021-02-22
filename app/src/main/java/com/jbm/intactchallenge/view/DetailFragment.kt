@@ -18,9 +18,6 @@ import javax.inject.Inject
 class DetailFragment : Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    //private var productId: Int = 0
-    //@Inject lateinit var mAdapter: HomeCatalogAdapter
-
     @Inject lateinit var catalog: Catalog
     private var productId = 0
 
@@ -46,12 +43,6 @@ class DetailFragment : Fragment() {
         return bindView(inflater, container)
     }
 
-    override fun onPause() {
-        super.onPause()
-        // save rating
-
-    }
-
     //Initialise all views element.
     fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
         // create our binding and set our product
@@ -69,7 +60,7 @@ class DetailFragment : Fragment() {
             .load(binding.product!!.imageUrl)
             .centerCrop()
             .override(500, 500)
-            .into(binding.root.findViewById<ImageView>(R.id.detail_image));
+            .into(binding.root.findViewById(R.id.detail_image));
 
         return binding.root
     }

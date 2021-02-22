@@ -1,10 +1,9 @@
 package com.jbm.intactchallenge.model
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
+import androidx.lifecycle.MutableLiveData
 import com.jbm.intactchallenge.R
-import com.jbm.intactchallenge.utils.Constants
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -24,6 +23,7 @@ class MyRepository @Inject constructor(
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
     val catalogURL = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
+    var liveCatalog = MutableLiveData(catalog)
 
     fun loadJsonfromUrl () {
         val request = Request.Builder()
@@ -91,11 +91,10 @@ class MyRepository @Inject constructor(
                 jsonProductSize.getString("W"),
                 jsonProductSize.getString("D"))
 
-            catalog.productList.add(newProduct)
+            liveCatalog.value?.productList?.add(newProduct)
+            liveCatalog.value = liveCatalog.value
         }
 
         Log.d(TAG, "JSON parsed " + catalog.productList.toString())
-
-        context.sendBroadcast(Intent().setAction(Constants().BROADCAST_ID_CATALOG_UPDATE))
     }
 }

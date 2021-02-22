@@ -1,7 +1,6 @@
 package com.jbm.intactchallenge.view
 
 import android.app.AlertDialog
-import android.content.*
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +8,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.MainActivity
@@ -20,7 +18,6 @@ import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
 import com.jbm.intactchallenge.databinding.WishlistItemBinding
 import com.jbm.intactchallenge.model.Catalog
-import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -40,14 +37,9 @@ class HomeFragment: Fragment() {
 
     @Inject lateinit var catalog: Catalog
 
-    val mBraodcastReceiver = object : BroadcastReceiver() {
-        @Override
-        override fun onReceive(p0: Context?, p1: Intent?) {
-            when(p1?.action) {
-                Constants().BROADCAST_ID_CATALOG_UPDATE -> updateHomeUI()
-            }
-        }
-    }
+    @Inject lateinit var myRepository: MyRepository
+
+    //private val model: HomeViewModel by activityViewModels()
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -56,10 +48,13 @@ class HomeFragment: Fragment() {
     }
 
     @Override
-    override fun onResume() {
-        super.onResume()
-        //Register to the broadcast Receiver to get notification with our model
-        requireActivity().registerReceiver(mBraodcastReceiver, IntentFilter(Constants().BROADCAST_ID_CATALOG_UPDATE))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        myRepository.liveCatalog.observe(viewLifecycleOwner, Observer<Catalog> {
+                catalog -> Log.d(TAG, "Catalog Live data changed " + catalog.productList.toString())
+                updateHomeUI()
+        })
     }
 
     @Override
@@ -67,14 +62,6 @@ class HomeFragment: Fragment() {
         super.onStart()
         updateCatalogUI()
         updateWishListUI()
-    }
-
-    @Override
-    override fun onPause() {
-        super.onPause()
-
-        //Unregister to broadcasts
-        requireActivity().unregisterReceiver(mBraodcastReceiver)
     }
 
     // Interface function. Will update all views
@@ -112,7 +99,7 @@ class HomeFragment: Fragment() {
         var totalPrice = 0
         wishlistLayout.removeAllViews()
 
-        Log.d(TAG, "repo = " + catalog.productList.toString())
+        //Log.d(TAG, "repo = " + catalog.productList.toString())
 
         for (product in catalog.productList) {
             if (product.wishListed == 1) {

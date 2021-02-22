@@ -1,5 +1,7 @@
 package com.jbm.intactchallenge.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import javax.inject.Inject
 
 class Catalog @Inject constructor() {
