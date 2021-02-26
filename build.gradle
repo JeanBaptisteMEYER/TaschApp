@@ -5,6 +5,7 @@ buildscript {
     ext.navigationVersion = '2.2.0'
     ext.fragmentVersion = '1.1.0-alpha09'
     ext.lifecycleVersion = '2.2.0'
+    ext.gsonVersion = '2.8.6'
 
     repositories {
         google()

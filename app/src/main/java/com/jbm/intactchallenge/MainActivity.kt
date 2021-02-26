@@ -3,7 +3,8 @@ package com.jbm.intactchallenge
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
+import com.jbm.intactchallenge.adapter.CatalogAdapter
+import com.jbm.intactchallenge.adapter.WishlistAdapter
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -45,7 +46,14 @@ class MainActivity: AppCompatActivity() {
     fun itemCatalogOnClick(view: View) {
         showDetailFragment(
                 (homeFragment.catalogRecyclerView.getChildViewHolder(view)
-                        as HomeCatalogAdapter.HomeViewHolder).catalogItemBinding.product!!.id)
+                        as CatalogAdapter.HomeViewHolder).catalogItemBinding.product!!.id)
+    }
+
+    // called when an item from the checklist is clicked
+    fun itemWishlistOnClick(view: View) {
+        showDetailFragment(
+            (homeFragment.wishlistRecyclerView.getChildViewHolder(view)
+                    as WishlistAdapter.WishlistViewHolder).wishlistItemBinding.product!!.id)
     }
 
     // Show detail fragment for the given product

@@ -11,7 +11,7 @@ import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.model.Product
 
 
-class HomeCatalogAdapter (val context: Context): RecyclerView.Adapter<HomeCatalogAdapter.HomeViewHolder>() {
+class CatalogAdapter (val context: Context): RecyclerView.Adapter<CatalogAdapter.HomeViewHolder>() {
 
     var catalog = Catalog()
 

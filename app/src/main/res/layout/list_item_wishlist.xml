@@ -10,6 +10,7 @@
         <import type="android.view.View"/>
     </data>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +18,8 @@
         android:background="@drawable/round_corner_white_shape"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:foreground="?attr/selectableItemBackgroundBorderless">
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:onClick="itemWishlistOnClick">
 
         <ImageView
             android:id="@+id/wishlist_item_image"

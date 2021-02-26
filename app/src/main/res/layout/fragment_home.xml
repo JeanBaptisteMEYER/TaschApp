@@ -82,11 +82,15 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/wishlist_layout"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/wishlist_recyclerview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/list_item_wishlist"
+                    android:layout_marginBottom="8dp"
+                    tools:context="com.jbm.intactchallenge.MainActivity"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
