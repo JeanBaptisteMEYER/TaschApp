@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <data>
-        <variable
-            name="catalog"
-            type="com.jbm.intactchallenge.model.Catalog" />
+    <variable
+        name="viewModel"
+        type="com.jbm.intactchallenge.viewmodels.MainViewModel" />
+
     </data>
 
     <!-- Main scrolling view -->
@@ -44,7 +46,7 @@
                 android:orientation="horizontal"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:context="com.jbm.intactchallenge.MainActivity"
-                tools:listitem="@layout/catalog_item"
+                tools:listitem="@layout/list_item_catalog"
                 android:layout_marginBottom="8dp"/>
 
             <!-- Wish list erea -->
@@ -76,7 +78,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text='@{@string/total + " " + @string/currency + catalog.checkOutPrice}' />
+                        android:text='@{@string/total + " " + @string/currency + viewModel.liveTotalPrice.toString()}'/>
 
                 </LinearLayout>
 
@@ -112,7 +114,7 @@
                         android:textSize="24dp"
                         android:textColor="#000000"
                         android:layout_weight="1"
-                        android:text="@{@string/currency + catalog.checkOutPrice}"/>
+                        android:text='@{@string/currency + viewModel.liveTotalPrice.toString()}'/>
 
                 </LinearLayout>
 

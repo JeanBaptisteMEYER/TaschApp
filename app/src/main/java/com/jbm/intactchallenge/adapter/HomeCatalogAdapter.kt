@@ -6,20 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.R
-import com.jbm.intactchallenge.databinding.CatalogItemBinding
+import com.jbm.intactchallenge.databinding.ListItemCatalogBinding
 import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.model.Product
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
 
 
-class HomeCatalogAdapter @Inject constructor(
-    @ApplicationContext val context: Context,
-    val catalog: Catalog): RecyclerView.Adapter<HomeCatalogAdapter.HomeViewHolder>() {
+class HomeCatalogAdapter (val context: Context): RecyclerView.Adapter<HomeCatalogAdapter.HomeViewHolder>() {
+
+    var catalog = Catalog()
 
     @Override
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val catalogItemBinding = CatalogItemBinding.inflate(LayoutInflater.from(parent.context),
+        val catalogItemBinding = ListItemCatalogBinding.inflate(LayoutInflater.from(parent.context),
                 parent, false)
 
         return HomeViewHolder(catalogItemBinding)
@@ -43,7 +41,7 @@ class HomeCatalogAdapter @Inject constructor(
         return catalog.productList.size
     }
 
-    class HomeViewHolder(val catalogItemBinding: CatalogItemBinding):
+    class HomeViewHolder(val catalogItemBinding: ListItemCatalogBinding):
             RecyclerView.ViewHolder(catalogItemBinding.root) {
 
         fun bind(product: Product) {

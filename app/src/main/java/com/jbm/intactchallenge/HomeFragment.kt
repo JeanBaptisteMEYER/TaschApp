@@ -1,4 +1,4 @@
-package com.jbm.intactchallenge.view
+package com.jbm.intactchallenge
 
 import android.app.AlertDialog
 import android.graphics.drawable.ColorDrawable
@@ -9,19 +9,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.lifecycle.Observer
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.jbm.intactchallenge.MainActivity
-import com.jbm.intactchallenge.R
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
-import com.jbm.intactchallenge.databinding.HomeFragmentBinding
-import com.jbm.intactchallenge.databinding.WishlistItemBinding
-import com.jbm.intactchallenge.model.Catalog
-import com.jbm.intactchallenge.model.MyRepository
+import com.jbm.intactchallenge.databinding.FragmentHomeBinding
+import com.jbm.intactchallenge.databinding.ListItemWishlistBinding
+import com.jbm.intactchallenge.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -32,12 +27,11 @@ class HomeFragment: Fragment() {
     lateinit var wishlistLayout: LinearLayout
 
     lateinit var catalogRecyclerView: RecyclerView
-    @Inject lateinit var homeCatalogAdapter: HomeCatalogAdapter
+    lateinit var homeCatalogAdapter: HomeCatalogAdapter
 
-    @Inject lateinit var catalog: Catalog
-    @Inject lateinit var myRepository: MyRepository
+    lateinit var binding: FragmentHomeBinding
 
-    lateinit var binding: HomeFragmentBinding
+    val mainViewModel: MainViewModel by activityViewModels()
 
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -50,17 +44,25 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //observe our live Catalog and update UI when its data change
-        myRepository.liveCatalog.observe(viewLifecycleOwner, Observer<Catalog> {
-            catalog -> Log.d(TAG, "Catalog Live data changed " + catalog.toString())
-            updateHomeUI()
+        // Update the Catalog RecyclerView
+        mainViewModel.liveCatalog.observe(viewLifecycleOwner, { catalog ->
+            Log.d(TAG, "LiveCatalog from ViewMode changed " + catalog.toString())
+            homeCatalogAdapter.catalog = catalog
+            homeCatalogAdapter.notifyDataSetChanged()
         })
-    }
 
-    @Override
-    override fun onStart() {
-        super.onStart()
-        updateHomeUI()
+        // Update the wish list
+        mainViewModel.liveWishList.observe(viewLifecycleOwner, { wishList ->
+            Log.d(TAG, "WishList from ViewMode changed " + wishList.toString())
+            updateWishListUI()
+        })
+
+        // Update prices of wishlist
+        mainViewModel.liveTotalPrice.observe(viewLifecycleOwner, { totalPrice ->
+            Log.d(TAG, "TotalPrice from ViewMode changed " + totalPrice.toString())
+
+            binding.invalidateAll()
+        })
     }
 
     fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
@@ -68,13 +70,14 @@ class HomeFragment: Fragment() {
         requireActivity().title = getString(R.string.app_name)
 
         // create and bind view to the catalog
-        binding = HomeFragmentBinding.inflate(LayoutInflater.from(context),
+        binding = FragmentHomeBinding.inflate(LayoutInflater.from(context),
             container, false)
 
-        binding.catalog = catalog
+        binding.viewModel = mainViewModel
 
         // The Recyclecler view that display the catalog
         catalogRecyclerView = binding.root.findViewById(R.id.catalog_recyclerview)
+        homeCatalogAdapter = HomeCatalogAdapter(requireContext())
         catalogRecyclerView.adapter = homeCatalogAdapter
 
         wishlistLayout = binding.root.findViewById(R.id.wishlist_layout)
@@ -82,51 +85,29 @@ class HomeFragment: Fragment() {
         return binding.root
     }
 
-    // Updage all UI
-    fun updateHomeUI() {
-        Log.d(TAG, "Home UI Update")
-
-        // catalog recycler view update
-        homeCatalogAdapter.notifyDataSetChanged()
-
-        // refresh Home UI - for Wishlist total price
-        binding.invalidateAll()
-
-        // refrech wishList section
-        updateWishListUI()
-    }
-
 
     // this will update the Wishlist part of the UI.
     fun updateWishListUI () {
-        var totalPrice = 0
         wishlistLayout.removeAllViews()
 
+        for (product in mainViewModel.liveWishList.value!!) {
+            val binding = ListItemWishlistBinding.inflate(LayoutInflater.from(context), wishlistLayout, false)
+            binding.product = product
 
-        for (product in catalog.productList) {
-            if (product.wishListed == 1) {
+            Glide
+                .with(this)
+                .load(product.imageUrl)
+                .centerCrop()
+                .override(180, 180)
+                .placeholder(ColorDrawable(android.graphics.Color.BLACK))
+                .into(binding.root.findViewById(R.id.wishlist_item_image));
 
-                val binding = WishlistItemBinding.inflate(LayoutInflater.from(context), wishlistLayout, false)
-                binding.product = product
-
-                //add price to total price
-                totalPrice = totalPrice + product.price
-
-                Glide
-                    .with(this)
-                    .load(product.imageUrl)
-                    .centerCrop()
-                    .override(180, 180)
-                    .placeholder(ColorDrawable(android.graphics.Color.BLACK))
-                    .into(binding.root.findViewById(R.id.wishlist_item_image));
-
-                binding.root.setOnClickListener {
-                    showDetailFragment(product.id)
-                }
-
-                //add the new product view to our scrolling view
-                wishlistLayout.addView(binding.root)
+            binding.root.setOnClickListener {
+                showDetailFragment(product.id)
             }
+
+            //add the new product view to our scrolling view
+            wishlistLayout.addView(binding.root)
         }
     }
 
@@ -150,8 +131,7 @@ class HomeFragment: Fragment() {
 
     fun doPositiveClick() {
         // clear the wishedlist and update ui
-        myRepository.checkOut()
-
+        mainViewModel.checkOut()
     }
 
     fun doNegativeClick() {

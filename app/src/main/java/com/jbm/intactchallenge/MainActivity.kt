@@ -2,18 +2,10 @@ package com.jbm.intactchallenge
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
-import androidx.lifecycle.lifecycleScope
 import com.jbm.intactchallenge.adapter.HomeCatalogAdapter
-import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.model.MyRepository
-import com.jbm.intactchallenge.model.Product
-import com.jbm.intactchallenge.view.DetailFragment
-import com.jbm.intactchallenge.view.HomeFragment
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -30,17 +22,12 @@ class MainActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.main_activity)
+        setContentView(R.layout.activity_main)
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                     .replace(R.id.container, homeFragment)
                     .commitNow()
-        }
-
-        //LoadJson with a coroutine
-        lifecycleScope.launch {
-            myRepository.loadJsonfromUrl()
         }
     }
 
