@@ -1,8 +1,8 @@
 TASCH App
 
 - Runs on Android 5+
-- MVVM + DataBing
-- Get Json data from Web using Okhttp
-- RecyclerView, Linear and Constaint layouts, Texts, Rating bars, Buttons
+- MVVM + Data Binging
+- Okhttp for http calls
 - Glide for image loading
 - Hilt for dependency injection
+- RecyclerView, Linear and Constaint layouts, Texts, Rating bars, Buttons
