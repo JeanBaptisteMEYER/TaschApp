@@ -1,4 +1,4 @@
-package com.jbm.intactchallenge.viewmodels
+package com.jbm.intactchallenge.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
@@ -20,13 +20,14 @@ class MainViewModel @Inject constructor(private val myRepository: MyRepository):
     var liveTotalPrice = MutableLiveData(0)
 
     init {
-        myRepository.getCatalogFromUrl { catalog -> //liveCatalog.value = catalog
-                Log.d(TAG, "From ViewModel got catalog " + catalog.toString())
+        // on first initialisation, get and parse the catalog from URL
+        myRepository.getCatalogFromUrl { catalog ->
+            Log.d(TAG, "From ViewModel got catalog " + catalog.toString())
             liveCatalog.postValue(catalog)
         }
     }
 
-    fun setProdctById(productId: Int) {
+    fun setLiveProductById(productId: Int) {
          liveProduct.value = liveCatalog.value!!.productList.find { it.id == productId }!!
     }
 

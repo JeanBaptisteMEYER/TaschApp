@@ -6,6 +6,7 @@ buildscript {
     ext.fragmentVersion = '1.1.0-alpha09'
     ext.lifecycleVersion = '2.2.0'
     ext.gsonVersion = '2.8.6'
+    ext.retrofitVersion = '2.0.0'
 
     repositories {
         google()

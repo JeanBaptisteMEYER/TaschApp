@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <data>
     <variable
         name="viewModel"
-        type="com.jbm.intactchallenge.viewmodels.MainViewModel" />
-
+        type="com.jbm.intactchallenge.viewmodel.MainViewModel" />
     </data>
 
     <!-- Main scrolling view -->

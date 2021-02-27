@@ -1,17 +1,15 @@
 package com.jbm.intactchallenge
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
-import com.bumptech.glide.Glide
 import com.jbm.intactchallenge.databinding.FragmentDetailBinding
 import com.jbm.intactchallenge.utils.Constants
-import com.jbm.intactchallenge.viewmodels.MainViewModel
+import com.jbm.intactchallenge.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +21,7 @@ class DetailFragment : Fragment() {
     val mainViewModel: MainViewModel by activityViewModels()
 
     lateinit var binding: FragmentDetailBinding
+
 
     @Override
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,41 +38,16 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        // Our initView Function will build our view and returns it
-        return bindView(inflater, container)
-    }
-
-    @Override
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        mainViewModel.liveProduct.observe(viewLifecycleOwner, { product ->
-            Log.d(TAG, "LiveProduct Changed = " + product.toString())
-        })
-    }
-
-    //Initialise all views element.
-    fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
         // create our binding and set our product
         binding = FragmentDetailBinding.inflate(LayoutInflater.from(context),
             container, false)
 
-        mainViewModel.setProdctById(productId)
-
-        // get the product that has been selected
+        // set and get the product that has been selected
+        mainViewModel.setLiveProductById(productId)
         binding.product = mainViewModel.liveProduct.value
 
         // set actionbar title with product title
         requireActivity().title = mainViewModel.liveProduct.value?.title
-
-        // load image with Glide
-        Glide
-            .with(this)
-            .load(binding.product!!.imageUrl)
-            .centerCrop()
-            .override(500, 500)
-            .into(binding.root.findViewById(R.id.detail_image));
 
         return binding.root
     }

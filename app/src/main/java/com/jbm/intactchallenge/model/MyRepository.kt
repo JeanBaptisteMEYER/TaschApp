@@ -1,6 +1,7 @@
 package com.jbm.intactchallenge.model
 
 import android.util.Log
+import com.jbm.intactchallenge.utils.Constants
 import okhttp3.*
 import org.json.JSONArray
 import org.json.JSONObject
@@ -8,22 +9,19 @@ import java.io.IOException
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-
 // Main Class
 class MyRepository @Inject constructor() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
-    val catalogURL = "https://drive.google.com/uc?export=download&id=180NdUCDsmJgCSAfwaJIoWOVSVdvqyNu2"
-
 
     fun getCatalogFromUrl(completion: (Catalog) -> Unit) {
         val request = Request.Builder()
-            .url(catalogURL)
+            .url(Constants().CATALOG_URL)
             .build()
 
 
         OkHttpClient().newCall(request).enqueue(object : Callback {
             override fun onResponse(call: Call, response: Response) {
-                val newCatalog = parseCatalogResponse2(JSONObject(response.body?.string()))
+                val newCatalog = parseCatalogResponse(JSONObject(response.body?.string()))
 
                 Log.d(TAG, "New Catalog downloaded and parsed = " + response.toString())
 
@@ -37,7 +35,11 @@ class MyRepository @Inject constructor() {
         })
     }
 
-    fun parseCatalogResponse2(response: JSONObject): Catalog {
+    fun gsonParcing(jsonString: String) {
+        Log.d(TAG, "jSonString = " + jsonString)
+    }
+
+    fun parseCatalogResponse(response: JSONObject): Catalog {
         var newCatalog = Catalog()
         var jsonProducts = response.getJSONArray("products")
 

@@ -28,13 +28,6 @@ class CatalogAdapter (val context: Context): RecyclerView.Adapter<CatalogAdapter
         val product = catalog.productList.get(position)
 
         holder.bind(product)
-
-        Glide
-            .with(context)
-            .load(product.imageUrl)
-            .centerCrop()
-            .override(200, 200)
-            .into(holder.catalogItemBinding.root.findViewById(R.id.catalog_item_image));
     }
 
     override fun getItemCount(): Int {

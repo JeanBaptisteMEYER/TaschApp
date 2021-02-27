@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jbm.intactchallenge.adapter.CatalogAdapter
 import com.jbm.intactchallenge.adapter.WishlistAdapter
 import com.jbm.intactchallenge.databinding.FragmentHomeBinding
-import com.jbm.intactchallenge.viewmodels.MainViewModel
+import com.jbm.intactchallenge.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -34,7 +34,27 @@ class HomeFragment: Fragment() {
     @Override
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        return bindView(inflater, container)
+        //Change Actionbar title to app name
+        requireActivity().title = getString(R.string.app_name)
+
+        // create and bind view to the catalog
+        binding = FragmentHomeBinding.inflate(LayoutInflater.from(context),
+            container, false)
+
+        // for total price update of the wishlist
+        binding.viewModel = mainViewModel
+
+        // The Recyclecler view that display the catalog
+        catalogRecyclerView = binding.root.findViewById<RecyclerView>(R.id.catalog_recyclerview)
+        homeCatalogAdapter = CatalogAdapter(requireContext())
+        catalogRecyclerView.adapter = homeCatalogAdapter
+
+        // The Recyclecler view that display the wishlist
+        wishlistRecyclerView = binding.root.findViewById<RecyclerView>(R.id.wishlist_recyclerview)
+        wishlislAdapter = WishlistAdapter(requireContext())
+        wishlistRecyclerView.adapter = wishlislAdapter
+
+        return binding.root
     }
 
     @Override
@@ -62,30 +82,6 @@ class HomeFragment: Fragment() {
             Log.d(TAG, "TotalPrice from ViewMode changed " + totalPrice.toString())
             binding.invalidateAll()
         })
-    }
-
-    fun bindView(inflater: LayoutInflater, container: ViewGroup?): View {
-        //Change Actionbar title to app name
-        requireActivity().title = getString(R.string.app_name)
-
-        // create and bind view to the catalog
-        binding = FragmentHomeBinding.inflate(LayoutInflater.from(context),
-            container, false)
-
-        // for total price update of the wishlist
-        binding.viewModel = mainViewModel
-
-        // The Recyclecler view that display the catalog
-        catalogRecyclerView = binding.root.findViewById<RecyclerView>(R.id.catalog_recyclerview)
-        homeCatalogAdapter = CatalogAdapter(requireContext())
-        catalogRecyclerView.adapter = homeCatalogAdapter
-
-        // The Recyclecler view that display the wishlist
-        wishlistRecyclerView = binding.root.findViewById<RecyclerView>(R.id.wishlist_recyclerview)
-        wishlislAdapter = WishlistAdapter(requireContext())
-        wishlistRecyclerView.adapter = wishlislAdapter
-
-        return binding.root
     }
 
     // called from activity when the onProceedToCheckOut button is clicked
