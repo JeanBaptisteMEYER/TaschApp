@@ -54,6 +54,9 @@ class HomeFragment: Fragment() {
         wishlislAdapter = WishlistAdapter(requireContext())
         wishlistRecyclerView.adapter = wishlislAdapter
 
+        // set on CheckOut clicklistener
+        binding.setClickListener { view -> onCheckOutClick() }
+
         return binding.root
     }
 

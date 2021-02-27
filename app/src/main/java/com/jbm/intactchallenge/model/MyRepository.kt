@@ -35,10 +35,6 @@ class MyRepository @Inject constructor() {
         })
     }
 
-    fun gsonParcing(jsonString: String) {
-        Log.d(TAG, "jSonString = " + jsonString)
-    }
-
     fun parseCatalogResponse(response: JSONObject): Catalog {
         var newCatalog = Catalog()
         var jsonProducts = response.getJSONArray("products")

@@ -2,8 +2,11 @@ package com.jbm.intactchallenge.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.jbm.intactchallenge.HomeFragmentDirections
 import com.jbm.intactchallenge.databinding.ListItemWishlistBinding
 import com.jbm.intactchallenge.model.Product
 
@@ -33,6 +36,19 @@ class WishlistAdapter (val context: Context): RecyclerView.Adapter<WishlistAdapt
 
     class WishlistViewHolder(val wishlistItemBinding: ListItemWishlistBinding):
             RecyclerView.ViewHolder(wishlistItemBinding.root) {
+
+        init {
+            wishlistItemBinding.setClickListener { view ->
+                wishlistItemBinding.product?.let {
+                    navToDetail(view, it.id)
+                }
+            }
+        }
+
+        fun navToDetail(view: View, productId: Int) {
+            val direction = HomeFragmentDirections.actionShowDetailfragment(productId)
+            view.findNavController().navigate(direction)
+        }
 
         fun bind(product: Product) {
             wishlistItemBinding.product = product

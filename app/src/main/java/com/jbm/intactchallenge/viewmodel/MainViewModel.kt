@@ -28,26 +28,39 @@ class MainViewModel @Inject constructor(private val myRepository: MyRepository):
     }
 
     fun setLiveProductById(productId: Int) {
-         liveProduct.value = liveCatalog.value!!.productList.find { it.id == productId }!!
+        liveCatalog.value?.let {
+            val newProduct = it.productList.find { it.id == productId }
+            liveProduct.value = newProduct
+        }
     }
 
     fun addToWishList() {
-        liveProduct.value?.wishListed = 1
-        liveWishList.value?.add(liveProduct.value!!)
-        liveTotalPrice.postValue(liveTotalPrice.value?.plus(liveProduct.value!!.price))
+        liveProduct.value?.let {
+            it.wishListed = 1
+            liveWishList.value?.add(it)
+            val newPrice = liveTotalPrice.value?.plus(it.price)
+            liveTotalPrice.value = newPrice
+        }
     }
 
     fun removeFromWishList() {
-        liveProduct.value?.wishListed = 0
-        liveWishList.value?.remove(liveProduct.value)
-        liveTotalPrice.postValue(liveTotalPrice.value?.minus(liveProduct.value!!.price))
+        liveProduct.value?.let {
+            it.wishListed = 0
+            liveWishList.value?.remove(it)
+            val newPrice = liveTotalPrice.value?.minus(it.price)
+            liveTotalPrice.value = newPrice
+        }
     }
 
     fun checkOut() {
-        for (p in liveWishList.value!!)
-            p.wishListed = 0
+        liveWishList.value?.let {
+            for (p in it)
+                p.wishListed = 0
 
-        liveWishList.postValue(mutableListOf())
+            it.clear()
+        }
+
+        liveWishList.value = liveWishList.value
         liveTotalPrice.value = 0
     }
 }

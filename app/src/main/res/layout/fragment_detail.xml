@@ -6,6 +6,10 @@
         <variable
             name="product"
             type="com.jbm.intactchallenge.model.Product" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
         
         <import type="android.graphics.Color"/>
         <import type="android.view.View"/>
@@ -200,7 +204,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginStart="24dp"
                 android:layout_marginEnd="24dp"
-                android:onClick="onWishListClick"/>
+                android:onClick="@{clickListener}"/>
 
         </LinearLayout>
     </ScrollView>

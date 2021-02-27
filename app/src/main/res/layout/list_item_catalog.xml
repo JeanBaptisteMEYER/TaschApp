@@ -6,6 +6,10 @@
         <variable
             name="product"
             type="com.jbm.intactchallenge.model.Product" />
+
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
     </data>
 
     <LinearLayout
@@ -15,7 +19,7 @@
         android:background="@drawable/round_corner_white_shape"
         android:layout_margin="4dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:onClick="itemCatalogOnClick">
+        android:onClick="@{clickListener}">
 
         <ImageView
             android:id="@+id/catalog_item_image"

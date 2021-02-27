@@ -7,6 +7,10 @@
             name="product"
             type="com.jbm.intactchallenge.model.Product" />
 
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
+
         <import type="android.graphics.Color"/>
         <import type="android.view.View"/>
     </data>
@@ -19,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:onClick="itemWishlistOnClick">
+        android:onClick="@{clickListener}">
 
         <ImageView
             android:id="@+id/wishlist_item_image"

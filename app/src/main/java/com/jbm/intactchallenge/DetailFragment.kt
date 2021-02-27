@@ -1,12 +1,15 @@
 package com.jbm.intactchallenge
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.jbm.intactchallenge.databinding.FragmentDetailBinding
 import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.viewmodel.MainViewModel
@@ -16,22 +19,11 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailFragment : Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    private var productId = 0
+    private val args: DetailFragmentArgs by navArgs()
 
     val mainViewModel: MainViewModel by activityViewModels()
 
     lateinit var binding: FragmentDetailBinding
-
-
-    @Override
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        // Get the ID of the selected product from argument
-        arguments?.let {
-            productId = it.getInt(Constants().ID_PARAM)
-        }
-    }
 
     @Override
     override fun onCreateView(
@@ -43,11 +35,13 @@ class DetailFragment : Fragment() {
             container, false)
 
         // set and get the product that has been selected
-        mainViewModel.setLiveProductById(productId)
+        mainViewModel.setLiveProductById(args.productId)
         binding.product = mainViewModel.liveProduct.value
 
         // set actionbar title with product title
         requireActivity().title = mainViewModel.liveProduct.value?.title
+
+        binding.setClickListener { view -> onWishListClick(view) }
 
         return binding.root
     }
@@ -58,16 +52,6 @@ class DetailFragment : Fragment() {
         else
             mainViewModel.removeFromWishList()
 
-        fragmentManager?.popBackStack()
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(productId: Int) =
-            DetailFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(Constants().ID_PARAM, productId)
-                }
-            }
+        findNavController().popBackStack()
     }
 }

@@ -2,9 +2,8 @@ package com.jbm.intactchallenge
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import com.jbm.intactchallenge.adapter.CatalogAdapter
-import com.jbm.intactchallenge.adapter.WishlistAdapter
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.jbm.intactchallenge.model.MyRepository
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -17,52 +16,13 @@ class MainActivity: AppCompatActivity() {
     // Repo for access to Models
     @Inject lateinit var myRepository: MyRepository
 
-    //@Inject lateinit var homeFragment: HomeFragment
-    var homeFragment: HomeFragment = HomeFragment()
-    var detailFragment: DetailFragment = DetailFragment()
+    lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, homeFragment)
-                    .commitNow()
-        }
-    }
-
-    // called from Home layout onCLick
-    fun onCheckOutClick(view: View) {
-        homeFragment.onCheckOutClick()
-    }
-
-    // called from Detail layout onCLick
-    fun onWishListClick (view: View) {
-        detailFragment.onWishListClick(view)
-    }
-
-    // called when an item from the catalog list is clicked
-    fun itemCatalogOnClick(view: View) {
-        showDetailFragment(
-                (homeFragment.catalogRecyclerView.getChildViewHolder(view)
-                        as CatalogAdapter.HomeViewHolder).catalogItemBinding.product!!.id)
-    }
-
-    // called when an item from the checklist is clicked
-    fun itemWishlistOnClick(view: View) {
-        showDetailFragment(
-            (homeFragment.wishlistRecyclerView.getChildViewHolder(view)
-                    as WishlistAdapter.WishlistViewHolder).wishlistItemBinding.product!!.id)
-    }
-
-    // Show detail fragment for the given product
-    fun showDetailFragment(productId: Int) {
-        detailFragment = DetailFragment.newInstance(productId)
-
-        supportFragmentManager.beginTransaction()
-            .addToBackStack(null)
-            .replace(R.id.container, detailFragment)
-            .commit()
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
     }
 }
