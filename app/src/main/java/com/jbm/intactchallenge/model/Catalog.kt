@@ -1,10 +1,10 @@
 package com.jbm.intactchallenge.model
 
 class Catalog {
-    var productList = mutableListOf<Product>()
+    var products = listOf<Product>()
 
     @Override
     override fun toString(): String {
-        return "CheckOut Price = " + productList.toString()
+        return "Catalog = " + products.toString()
     }
 }

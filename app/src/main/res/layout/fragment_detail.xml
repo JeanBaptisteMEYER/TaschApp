@@ -26,12 +26,21 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/detail_image"
-                android:layout_width="350dp"
-                android:layout_height="350dp"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:background="#FFFFFF"
-                app:imageFromUrl="@{product.imageUrl}"/>
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/detail_image"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:layout_gravity="center"
+                    android:background="#FFFFFF"
+                    app:imageFromUrl="@{product.imageUrl}"/>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/detail_info_layout"
@@ -59,7 +68,7 @@
                         android:layout_marginEnd="16dp"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:text='@{"$" + String.valueOf(product.price)}'/>
+                        android:text='@{"$" + String.valueOf(product.roundedPrice)}'/>
 
                     <TextView
                         android:layout_width="wrap_content"

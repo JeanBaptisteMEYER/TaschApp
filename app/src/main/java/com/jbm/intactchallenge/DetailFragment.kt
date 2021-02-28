@@ -1,7 +1,6 @@
 package com.jbm.intactchallenge
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.jbm.intactchallenge.databinding.FragmentDetailBinding
-import com.jbm.intactchallenge.utils.Constants
 import com.jbm.intactchallenge.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,6 +39,7 @@ class DetailFragment : Fragment() {
         // set actionbar title with product title
         requireActivity().title = mainViewModel.liveProduct.value?.title
 
+        // on wishlist button click listener
         binding.setClickListener { view -> onWishListClick(view) }
 
         return binding.root

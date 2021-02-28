@@ -1,7 +1,9 @@
 package com.jbm.intactchallenge.model
 
-class Size (h: String, w: String, d: String){
-    var height = h
-    var width = w
-    var depth = d
+import com.google.gson.annotations.SerializedName
+
+class Size {
+    @SerializedName("H")  var height = ""
+    @SerializedName("W") var width = ""
+    @SerializedName("D") var depth = ""
 }

@@ -8,6 +8,10 @@ buildscript {
     ext.gsonVersion = '2.8.6'
     ext.retrofitVersion = '2.0.0'
     ext.nav_version = "2.3.3"
+    ext.espressoVersion = "3.3.0"
+    ext.materialVersion = "1.2.1"
+    ext.gsonVersion = "2.8.6"
+    ext.okhttpVersion = "4.9.0"
 
     repositories {
         google()
@@ -18,9 +22,6 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
     }
 }
 

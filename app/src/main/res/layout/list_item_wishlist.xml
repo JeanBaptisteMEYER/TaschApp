@@ -27,8 +27,8 @@
 
         <ImageView
             android:id="@+id/wishlist_item_image"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_gravity="center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:text='@{"$" + product.price}'/>
+                android:text='@{"$" + product.roundedPrice}'/>
 
             <TextView
                 android:id="@+id/wishlist_item_title"
@@ -63,7 +63,7 @@
                 android:id="@+id/wishlist_item_short_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{product.shordDescription}"/>
+                android:text="@{product.shortDescription}"/>
 
             <TextView
                 android:id="@+id/wishlist_item_out_of_stock"

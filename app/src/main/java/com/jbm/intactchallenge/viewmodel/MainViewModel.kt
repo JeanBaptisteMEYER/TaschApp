@@ -8,6 +8,7 @@ import com.jbm.intactchallenge.model.MyRepository
 import com.jbm.intactchallenge.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val myRepository: MyRepository): ViewModel() {
@@ -29,7 +30,7 @@ class MainViewModel @Inject constructor(private val myRepository: MyRepository):
 
     fun setLiveProductById(productId: Int) {
         liveCatalog.value?.let {
-            val newProduct = it.productList.find { it.id == productId }
+            val newProduct = it.products.find { it.id == productId }
             liveProduct.value = newProduct
         }
     }
@@ -38,7 +39,7 @@ class MainViewModel @Inject constructor(private val myRepository: MyRepository):
         liveProduct.value?.let {
             it.wishListed = 1
             liveWishList.value?.add(it)
-            val newPrice = liveTotalPrice.value?.plus(it.price)
+            val newPrice = liveTotalPrice.value?.plus(it.getRoundedPrice())
             liveTotalPrice.value = newPrice
         }
     }
@@ -47,7 +48,7 @@ class MainViewModel @Inject constructor(private val myRepository: MyRepository):
         liveProduct.value?.let {
             it.wishListed = 0
             liveWishList.value?.remove(it)
-            val newPrice = liveTotalPrice.value?.minus(it.price)
+            val newPrice = liveTotalPrice.value?.minus(it.getRoundedPrice())
             liveTotalPrice.value = newPrice
         }
     }

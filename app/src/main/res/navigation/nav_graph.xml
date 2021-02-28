@@ -20,8 +20,7 @@
 
         <argument
             android:name="productId"
-            app:argType="integer"
-            android:defaultValue="1"/>
+            app:argType="integer"/>
 
     </fragment>
 </navigation>
