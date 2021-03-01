@@ -51,10 +51,13 @@ dependencies {
 
     // testing libs
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.1.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     testImplementation 'junit:junit:4.+'
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hilt_version"
 
     // Viewmodel / livedata
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
@@ -68,7 +71,6 @@ dependencies {
 
     // For di
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0-alpha04'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     //library use for image loading
