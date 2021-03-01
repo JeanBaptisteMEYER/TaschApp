@@ -1,17 +1,17 @@
 package com.jbm.intactchallenge.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.jbm.intactchallenge.HomeFragmentDirections
 import com.jbm.intactchallenge.databinding.ListItemWishlistBinding
 import com.jbm.intactchallenge.model.Product
 
 
-class WishlistAdapter (val context: Context): RecyclerView.Adapter<WishlistAdapter.WishlistViewHolder>() {
+class WishlistAdapter (): Adapter<WishlistAdapter.WishlistViewHolder>() {
 
     var wishlist = mutableListOf<Product>()
 

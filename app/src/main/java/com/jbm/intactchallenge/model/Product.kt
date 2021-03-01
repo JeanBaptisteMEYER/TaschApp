@@ -4,16 +4,17 @@ import com.google.gson.annotations.SerializedName
 import kotlin.math.roundToInt
 
 class Product {
-    var id = 0
-    var title = ""
-    var brand = ""
+    @SerializedName("id") var id = 0
+    @SerializedName("title") var title = ""
+    @SerializedName("brand") var brand = ""
     @SerializedName("short_description")  var shortDescription = ""
     @SerializedName("description") var fullDescription = ""
-    var price = 0.0
+    @SerializedName("price") var price = 0.0
     @SerializedName("image") var imageUrl = ""
-    var colors = listOf<Color>()
-    var size = Size()
+    @SerializedName("colors") var colors = listOf<Color>()
+    @SerializedName("size") var size = Size()
     @SerializedName("quantity") var quantityInStock = 0
+
     var wishListed = 0
     var rating = 0.toFloat()
 

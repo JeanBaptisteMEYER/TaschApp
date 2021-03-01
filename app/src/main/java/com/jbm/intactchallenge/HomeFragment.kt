@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.RecyclerView
 import com.jbm.intactchallenge.adapter.CatalogAdapter
 import com.jbm.intactchallenge.adapter.WishlistAdapter
 import com.jbm.intactchallenge.databinding.FragmentHomeBinding
@@ -20,15 +19,13 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment: Fragment() {
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 
-    lateinit var catalogRecyclerView: RecyclerView
-    lateinit var homeCatalogAdapter: CatalogAdapter
+    val mainViewModel: MainViewModel by activityViewModels()
 
-    lateinit var wishlistRecyclerView: RecyclerView
-    lateinit var wishlislAdapter: WishlistAdapter
+    // adapters for aur RecyclerViews
+    val catalogAdapter: CatalogAdapter = CatalogAdapter()
+    val wishlislAdapter: WishlistAdapter = WishlistAdapter()
 
     lateinit var binding: FragmentHomeBinding
-
-    val mainViewModel: MainViewModel by activityViewModels()
 
 
     @Override
@@ -45,14 +42,10 @@ class HomeFragment: Fragment() {
         binding.viewModel = mainViewModel
 
         // The Recyclecler view that display the catalog
-        catalogRecyclerView = binding.root.findViewById<RecyclerView>(R.id.catalog_recyclerview)
-        homeCatalogAdapter = CatalogAdapter(requireContext())
-        catalogRecyclerView.adapter = homeCatalogAdapter
+        binding.catalogRecyclerview.adapter = catalogAdapter
 
         // The Recyclecler view that display the wishlist
-        wishlistRecyclerView = binding.root.findViewById<RecyclerView>(R.id.wishlist_recyclerview)
-        wishlislAdapter = WishlistAdapter(requireContext())
-        wishlistRecyclerView.adapter = wishlislAdapter
+        binding.wishlistRecyclerview.adapter = wishlislAdapter
 
         // set on CheckOut clicklistener
         binding.setClickListener { view -> onCheckOutClick() }
@@ -68,21 +61,21 @@ class HomeFragment: Fragment() {
 
         // Update the Catalog RecyclerView
         mainViewModel.liveCatalog.observe(viewLifecycleOwner, { catalog ->
-            Log.d(TAG, "LiveCatalog from ViewMode changed " + catalog.toString())
-            homeCatalogAdapter.catalog = catalog
-            homeCatalogAdapter.notifyDataSetChanged()
+            Log.d(TAG, "LiveCatalog from ViewModel changed " + catalog.toString())
+            catalogAdapter.catalog = catalog
+            catalogAdapter.notifyDataSetChanged()
         })
 
         // Update the wish list
         mainViewModel.liveWishList.observe(viewLifecycleOwner, { wishList ->
-            Log.d(TAG, "WishList from ViewMode changed " + wishList.toString())
+            Log.d(TAG, "WishList from ViewModel changed " + wishList.toString())
             wishlislAdapter.wishlist = wishList
             wishlislAdapter.notifyDataSetChanged()
         })
 
         // Update prices of wishlist
         mainViewModel.liveTotalPrice.observe(viewLifecycleOwner, { totalPrice ->
-            Log.d(TAG, "TotalPrice from ViewMode changed " + totalPrice.toString())
+            Log.d(TAG, "TotalPrice from ViewModel changed " + totalPrice.toString())
             binding.invalidateAll()
         })
     }

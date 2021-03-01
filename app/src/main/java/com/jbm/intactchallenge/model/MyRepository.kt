@@ -4,11 +4,8 @@ import android.util.Log
 import com.google.gson.Gson
 import com.jbm.intactchallenge.utils.Constants
 import okhttp3.*
-import org.json.JSONArray
-import org.json.JSONObject
 import java.io.IOException
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 // Repository class to access data
 class MyRepository @Inject constructor() {

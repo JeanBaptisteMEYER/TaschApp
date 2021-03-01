@@ -1,18 +1,18 @@
 package com.jbm.intactchallenge.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.jbm.intactchallenge.HomeFragmentDirections
 import com.jbm.intactchallenge.databinding.ListItemCatalogBinding
 import com.jbm.intactchallenge.model.Catalog
 import com.jbm.intactchallenge.model.Product
 
 
-class CatalogAdapter (val context: Context): RecyclerView.Adapter<CatalogAdapter.HomeViewHolder>() {
+class CatalogAdapter (): Adapter <CatalogAdapter.HomeViewHolder>() {
 
     val TAG: String =  "tag.jbm." + this::class.java.simpleName
 

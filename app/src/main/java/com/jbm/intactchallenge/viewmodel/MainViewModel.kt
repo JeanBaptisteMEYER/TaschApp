@@ -8,7 +8,6 @@ import com.jbm.intactchallenge.model.MyRepository
 import com.jbm.intactchallenge.model.Product
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @HiltViewModel
 class MainViewModel @Inject constructor(private val myRepository: MyRepository): ViewModel() {

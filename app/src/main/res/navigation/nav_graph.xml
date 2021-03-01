@@ -21,6 +21,5 @@
         <argument
             android:name="productId"
             app:argType="integer"/>
-
     </fragment>
 </navigation>
