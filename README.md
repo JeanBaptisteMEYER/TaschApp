@@ -1,4 +1,4 @@
-TASCH App is an sample app that will download and display a catalog of product
+TASCH is an simple app that will download and display a catalog of products
 
 - Runs on Android 5+
 - MVVM + Data Binging
